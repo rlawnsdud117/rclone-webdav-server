@@ -36,8 +36,11 @@ config_file=$"/data/rclone.conf"
     # [와 ] 문자 제거하여 섹션 이름만 추출
     section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
-# 폴더 생성
-mkdir /data/Log
+#/data/Log
+folder_path=$"/data/Log"
+if [ ! -d "$folder_path" ]; then
+    mkdir -p "$folder_path"
+fi
 
 # Apache 웹 서버에서 WebDAV와 Basic Authentication 설정을 진행합니다.
 rm -f /etc/apache2/webdav.password
