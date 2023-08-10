@@ -40,5 +40,5 @@ config_file=$"/data/rclone.conf"
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav $section_name: --addr 0.0.0.0:80 --config /data/rclone.conf --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --bwlimit $bwlimit 2>/dev/null
+rclone serve webdav $section_name: --addr 0.0.0.0:80 --config /data/rclone.conf --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --log-file /data/log/log.txt --bwlimit $bwlimit 2>/dev/null
 /bin/bash
