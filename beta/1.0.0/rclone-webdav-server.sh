@@ -25,7 +25,7 @@ fi
 
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
-if [ ! -f /data//configrclone.conf ]; then
+if [ ! -f /data//config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
     /bin/bash
