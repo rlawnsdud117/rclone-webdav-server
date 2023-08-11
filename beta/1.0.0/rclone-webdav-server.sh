@@ -20,7 +20,7 @@ fi
 config_file=$"/data/config/rclone.conf"
 PORT=$"80"
 
-if [ ! -f $config_file ]; then
+if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
     echo "rclone.conf is missing. Configure it by running 'rclone config'!"
     /bin/bash
