@@ -20,9 +20,8 @@ fi
 if [ ! -d "/data/Log" ]; then
   if [ ! -d "/data/config"]; then
     mkdir -p "/data/Log"
-fi
+    fi
     mkdir -p "/data/config"
-
 fi
 
 
