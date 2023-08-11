@@ -16,7 +16,7 @@ if [ -z "$3" ]; then
 fi
 
 if [ ! -d "/data/Log" ]; then
-  if{ ! -d "/data/config"}; then
+  if [ ! -d "/data/config"]; then
     mkdir -p "/data/Log"
 fi
     mkdir -p "/data/config"
