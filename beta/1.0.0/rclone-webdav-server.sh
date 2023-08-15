@@ -22,7 +22,7 @@ if [ ! -d $"/data/config" ]; then
 fi
 if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
-fu
+fi
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
