@@ -17,8 +17,8 @@ else
   bwlimit="$3"
 fi
 
-if [ ! -d /data/Log ]; then
-  if [ ! -d /data/config ]; then
+if [ ! -d $"/data/Log" ]; then
+  if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/Log"
     fi
     mkdir -p "/data/config"
