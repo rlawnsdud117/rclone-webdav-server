@@ -2,13 +2,11 @@ FROM debian:bullseye-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# 환경 변수를 설정합니다.
 ENV username "user"
 ENV password "user"
 ENV bwlimit "30m"
 ENV LANG=ko_KR.UTF-8
 
-# 필요한 패키지들을 설치합니다.
 RUN apt-get update && \
     apt-get install -y curl unzip apache2 locales && \
     curl https://rclone.org/install.sh | bash && \
@@ -20,6 +18,4 @@ RUN apt-get update && \
     
 EXPOSE 80
 
-
 CMD /webdav-server.sh "$username" "$password" "$bwlimit"
-
