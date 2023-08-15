@@ -17,13 +17,13 @@ else
   bwlimit="$3"
 fi
 
-if [ ! -d $"/data/Log" ]; then
-  if [ ! -d $"/data/config" ]; then
-    mkdir -p "/data/Log"
-    fi
+if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
 fi
 
+if [ ! -d $"/data/Log"] then
+    mkdir -p "/data/Log"
+fi
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
