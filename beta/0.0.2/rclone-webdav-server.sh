@@ -31,9 +31,7 @@ if [ ! -f /data/config/rclone.conf ]; then
     /bin/bash
   fi
   mkdir -p /data
-
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
- 
 fi
 
 config_file=$"/data/config/rclone.conf"
