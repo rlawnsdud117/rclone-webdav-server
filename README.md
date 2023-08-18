@@ -1,6 +1,6 @@
 # rclone-webdav-server
 
-This script allows you to use various cloud services through WebDAV Apache2 using rclone.
+This script allows you to utilize various cloud services through WebDAV on Apache2 using rclone.
 
 # How to use
 1. Download this script.
@@ -8,19 +8,19 @@ This script allows you to use various cloud services through WebDAV Apache2 usin
 ```
 apt-get update && apt-get install -y curl && apt-get install -y unzip && curl https://rclone.org/install.sh | bash && apt-get install -y apache2 && rclone .
 ```
-4. Run rclone config to configure it.
+3. Configure rclone by running the command:
 ```
 rclone config
 ```
-6. Download the script using curl.
+4. Download the script using curl:
 ```
 curl -o /webdav-server.sh https://raw.githubusercontent.com/rlawnsdud117/rclone-webdav-server/main/webdav-server.sh
 ```
-7. Give the sh file permission first
+5. Provide execute permission to the sh file:
 ```
 chmod +x /webdav-server.sh
 ```
-8.  Run the script.
+6.  Run the script.
 ```
 ./webdav-server.sh username password 30m
 ```
