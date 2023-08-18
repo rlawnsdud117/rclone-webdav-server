@@ -18,7 +18,7 @@ fi
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
-    echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
+    echo "The 'rclone.conf' file is missing. Please run 'rclone config' to set it up!"
     /bin/bash
   fi
   mkdir -p /data
@@ -26,15 +26,14 @@ if [ ! -f /data/rclone.conf ]; then
 fi
 
 config_file=$"/data/rclone.conf"
+section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
+if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
+ echo "Unable to find a valid section name in the first line."
+ exit 1
+fi
 
-    section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
-    if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
-        echo "첫 번째 줄에서 유효한 섹션 이름을 찾지 못했습니다."
-        exit 1
-    fi
-
-    # [와 ] 문자 제거하여 섹션 이름만 추출
-    section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
+# [와 ] 문자 제거하여 섹션 이름만 추출
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
 # Apache 웹 서버에서 WebDAV와 Basic Authentication 설정을 진행합니다.
 rm -f /etc/apache2/webdav.password
