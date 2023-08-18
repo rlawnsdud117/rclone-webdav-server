@@ -27,7 +27,7 @@ fi
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
-    echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
+    echo "The 'rclone.conf' file is missing. Please run 'rclone config' to set it up!"
     /bin/bash
   fi
   mkdir -p /data
@@ -37,7 +37,7 @@ fi
 config_file=$"/data/config/rclone.conf"
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
-  echo "첫 번째 줄에서 유효한 섹션 이름을 찾지 못했습니다."
+  echo "Unable to find a valid section name in the first line.."
   exit 1
 fi
   
