@@ -32,7 +32,7 @@ if [ ! -f /data/config/rclone.conf ]; then
   fi
   mkdir -p /data
 
-  cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf 2>dex/null
+  cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 
 #  cp -f /data/config/rclone.conf /root/.config/rclone/rclone.conf 2>dex/null
   # mv /root/.config/rclone/rclone.conf /data/config/rclone.conf 2>/dev/null
