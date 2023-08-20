@@ -31,7 +31,7 @@ if [ ! -d "$config_folder" ]; then
 fi
 
 config_folder=$"/data/config"
-rclone_conf_source=$"/root/.config/rclone.conf"
+rclone_conf_source=$"/root/.config/rclone/rclone.conf"
 rclone_conf_destination="${config_folder}/rclone.conf"
 
 if [ ! -f $rclone_conf_destination ]; then
