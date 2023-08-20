@@ -51,3 +51,21 @@ else
   echo "2번 $rclone_conf_source 에서 $rclone_conf_destination 복사"
   cp -f "$rclone_conf_destination" "$rclone_conf_source"
 fi
+
+
+
+section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$rclone_conf_destination")
+if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
+  echo "첫 번째 줄에서 유효한 섹션 이름을 찾지 못했습니다."
+  exit 1
+fi
+  
+# [와 ] 문자 제거하여 섹션 이름만 추출
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
+
+# Apache 웹 서버에서 WebDAV와 Basic Authentication 설정을 진행합니다.
+rm -f /etc/apache2/webdav.password
+echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
+
+rclone serve webdav $section_name: --addr 0.0.0.0:80 --config /data/config/rclone.conf  --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --bwlimit $bwlimit
+/bin/bash
