@@ -38,7 +38,9 @@ if [ ! -f $rclone_conf_destination ]; then
   if [ ! -f $rclone_conf_source ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
     /bin/bash
-    else
+    else 
+    echo ""$rclone_conf_source 에서 $rclone_conf_destination 복사"
+
     cp -f "$rclone_conf_source" "$rclone_conf_destination" 
   fi  
   echo ""$rclone_conf_destination에서 $rclone_conf_source 복사"
