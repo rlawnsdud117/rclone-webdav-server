@@ -30,20 +30,20 @@ if [ ! -d "$config_folder" ]; then
     mkdir -p "$config_folder"
 fi
 
+config_folder=$"/data/config"
 rclone_conf_source=$"/root/.config/rclone.conf"
-rclone_conf_destination=$"/data/config/rclone.conf"
+rclone_conf_destination="${config_folder}/rclone.conf"
 
- if [ ! -f $rclone_conf_destination ]; then
-   echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
-   /bin/bash
- fi
-  
-# 대상 폴더에 rclone.conf 파일이 있는지 확인합니다
-if [ ! -f "$rclone_conf_destination" ]; then
-    cp "$rclone_conf_source" "$rclone_conf_destination"
+if [ ! -f $rclone_conf_destination ]; then
+  if [ ! -f $rclone_conf_source ]; then
+    echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
+    /bin/bash
+    else
+    cp -f "$rclone_conf_source" "$rclone_conf_destination" 2>/dev/null0
+  fi  
+cp -f "$rclone_conf_destination" "$rclone_conf_source" 2>/dev/null
 else
-    # 만약 존재한다면, 덮어씁니다
-    cp -f "$rclone_conf_source" "$rclone_conf_destination"
+cp -f "$rclone_conf_source" "$rclone_conf_destination"  2>/dev/null
 fi
 
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$rclone_conf_destination")
