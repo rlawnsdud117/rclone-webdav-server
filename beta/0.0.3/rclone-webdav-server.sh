@@ -40,15 +40,12 @@ if [ ! -f $rclone_conf_destination ]; then
     /bin/bash
     else
     cp -f "$rclone_conf_source" "$rclone_conf_destination" 
-    #2>/dev/null
   fi  
   echo ""$rclone_conf_destination에서 $rclone_conf_source 복사"
 cp -f "$rclone_conf_destination" "$rclone_conf_source"
-#2>/dev/null
 else
 
 cp -f "$rclone_conf_source" "$rclone_conf_destination"  
-#2>/dev/null
 fi
 
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$rclone_conf_destination")
