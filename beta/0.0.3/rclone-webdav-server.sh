@@ -34,11 +34,6 @@ config_folder=$"/data/config"
 rclone_conf_source=$"/root/.config/rclone/rclone.conf"
 rclone_conf_destination=$"/data/config/rclone.conf"
 
-echo "$config_folder"
-echo "$rclone_conf_source"
-echo "$rclone_conf_destination"
-
-
 if [ ! -f "$rclone_conf_destination" ]; then
   if [ ! -f "$rclone_conf_source" ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
