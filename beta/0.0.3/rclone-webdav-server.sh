@@ -44,7 +44,6 @@ if [ ! -f $rclone_conf_destination ]; then
   echo ""$rclone_conf_destination에서 $rclone_conf_source 복사"
 cp -f "$rclone_conf_destination" "$rclone_conf_source"
 else
-
 cp -f "$rclone_conf_source" "$rclone_conf_destination"  
 fi
 
@@ -61,5 +60,5 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav $section_name: --addr 0.0.0.0:80 --config $rclone_conf_destination  --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --bwlimit $bwlimit
+rclone serve webdav $section_name: --addr 0.0.0.0:80 --config "$rclone_conf_destination"  --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --bwlimit $bwlimit
 /bin/bash
