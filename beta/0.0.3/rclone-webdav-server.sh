@@ -43,7 +43,7 @@ if [ ! -f "$rclone_conf_destination" ]; then
   if [ ! -f "$rclone_conf_source" ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
     /bin/bash
-  else 
+#  else 
     echo "1번 $rclone_conf_source 에서 $rclone_conf_destination 복사"
     cp -f "$rclone_conf_source" "$rclone_conf_destination"
   fi
@@ -52,7 +52,8 @@ else
   cp -f "$rclone_conf_destination" "$rclone_conf_source"
 fi
 
-
+    cp -f "$rclone_conf_source" "$rclone_conf_destination"
+ 
 
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$rclone_conf_destination")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
