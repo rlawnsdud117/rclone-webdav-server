@@ -43,16 +43,12 @@ if [ ! -f "$rclone_conf_destination" ]; then
   if [ ! -f "$rclone_conf_source" ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
     /bin/bash
-#  else 
-    echo "1번 $rclone_conf_source 에서 $rclone_conf_destination 복사"
-    cp -f "$rclone_conf_source" "$rclone_conf_destination"
+    cp -f "$rclone_conf_source" "$rclone_conf_destination" 2>/dev/null
   fi
 else
-  echo "2번 $rclone_conf_source 에서 $rclone_conf_destination 복사"
-  cp -f "$rclone_conf_destination" "$rclone_conf_source"
+  cp -f "$rclone_conf_destination" "$rclone_conf_source" 2>/dev/null
 fi
-
-    cp -f "$rclone_conf_source" "$rclone_conf_destination"
+ cp -f "$rclone_conf_source" "$rclone_conf_destination" 2>/dev/null
  
 
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$rclone_conf_destination")
@@ -68,5 +64,5 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav $section_name: --addr 0.0.0.0:80 --config /data/config/rclone.conf  --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --bwlimit $bwlimit
+rclone serve webdav $section_name: --addr 0.0.0.0:80 --config $rclone_conf_destination  --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --bwlimit $bwlimit
 /bin/bash
