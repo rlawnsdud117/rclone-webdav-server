@@ -20,6 +20,7 @@ fi
 data_folde=$"/data"
 config_folder=$"/data/config"
 Log_folder=$"/data/Log"
+
 if [ ! -d "$data_folde" ]; then
     mkdir -p "$data_folde"
 fi
@@ -33,16 +34,22 @@ fi
 config_folder=$"/data/config"
 rclone_conf_source=$"/root/.config/rclone/rclone.conf"
 rclone_conf_destination=$"/data/config/rclone.conf"
-APACHE_CONFIG_FILE=$"/etc/apache2/apache2.conf"
 
-MODULE_LINES=(
-    "LoadModule dav_module /usr/lib/apache2/modules/mod_dav.so"
-    "LoadModule dav_fs_module /usr/lib/apache2/modules/mod_dav_fs.so"
-)
 
-for line in "${MODULE_LINES[@]}"; do
-   sed -i "s|^$line|#$line|" "$APACHE_CONFIG_FILE"
-done
+# 아파치2 구성 파일 경로
+APACHE_CONFIG_FILE="/etc/apache2/apache2.conf"
+
+# WebDAV 관련 설정 찾기
+WEBDAV_CONFIG="
+<Location /webdav>
+    DAV On
+    Require valid-user
+</Location>
+"
+# 주석 처리하기
+sed -i "s|$WEBDAV_CONFIG|#$WEBDAV_CONFIG|" "$APACHE_CONFIG_FILE"
+
+
 
 if [ ! -f "$rclone_conf_destination" ]; then
   if [ ! -f "$rclone_conf_source" ]; then
