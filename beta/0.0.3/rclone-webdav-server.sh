@@ -47,9 +47,7 @@ WEBDAV_CONFIG=$"
 </Location>
 "
 # 주석 처리하기
-sed -i "s|$WEBDAV_CONFIG|#$WEBDAV_CONFIG|" "$$APACHE_CONFIG_FILE"
-
-
+sed -i "s|${WEBDAV_CONFIG//\//\\/}|#${$WEBDAV_CONFIG//\//\\/}|" "$APACHE_CONFIG_FILE"
 
 if [ ! -f "$rclone_conf_destination" ]; then
   if [ ! -f "$rclone_conf_source" ]; then
