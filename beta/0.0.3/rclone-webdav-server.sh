@@ -35,12 +35,11 @@ rclone_conf_source=$"/root/.config/rclone/rclone.conf"
 rclone_conf_destination=$"/data/config/rclone.conf"
 APACHE_CONFIG_FILE=$"/etc/apache2/apache2.conf"
 
-MODULE_LINES=$(
+MODULE_LINES=(
     "LoadModule dav_module /usr/lib/apache2/modules/mod_dav.so"
     "LoadModule dav_fs_module /usr/lib/apache2/modules/mod_dav_fs.so"
 )
 
-# 주석 처리 수행
 for line in "${MODULE_LINES[@]}"; do
    sed -i "s|^$line|#$line|" "$APACHE_CONFIG_FILE"
 done
