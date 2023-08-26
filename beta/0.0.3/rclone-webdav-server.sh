@@ -35,20 +35,6 @@ config_folder=$"/data/config"
 rclone_conf_source=$"/root/.config/rclone/rclone.conf"
 rclone_conf_destination=$"/data/config/rclone.conf"
 
-
-# 아파치2 구성 파일 경로
-APACHE_CONFIG_FILE=$"/etc/apache2/apache2.conf"
-
-# WebDAV 관련 설정 찾기
-WEBDAV_CONFIG=$"
-<Location /webdav>
-    DAV On
-    Require valid-user
-</Location>
-"
-# 주석 처리하기
-sed -i "s|${WEBDAV_CONFIG//\//\\/}|#${WEBDAV_CONFIG//\//\\/}|" "$APACHE_CONFIG_FILE"
-
 if [ ! -f "$rclone_conf_destination" ]; then
   if [ ! -f "$rclone_conf_source" ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
