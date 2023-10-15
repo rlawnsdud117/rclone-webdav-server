@@ -20,8 +20,9 @@ fi
 if [ -z "$4" ]; then
   write="writes"
 else
-  write="$4"
+  write="$3"
 fi
+
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
 fi
