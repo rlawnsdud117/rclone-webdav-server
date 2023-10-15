@@ -17,8 +17,7 @@ else
   bwlimit="$3"
 fi
 
-# 쓰기여부 추가 테스트
-if [ -z "$4"]; then
+if [ -z "$4" ]; then
   write="writes"
 else
   write="$4"
