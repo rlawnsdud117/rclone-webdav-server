@@ -23,6 +23,11 @@ else
   readonly=""
 fi
 
+if [ -z "$5" ]; then
+  tpslimit="10"
+else
+  tpslimit="$5"
+fi
 
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
@@ -55,5 +60,5 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav "$section_name": --addr 0.0.0.0:80 --config /data/config/rclone.conf --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode writes --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --bwlimit $bwlimit $readonly
+rclone serve webdav "$section_name": --addr 0.0.0.0:80 --config /data/config/rclone.conf --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode writes --tpslimit $tpslimit --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --bwlimit $bwlimit $readonly
 /bin/bash
