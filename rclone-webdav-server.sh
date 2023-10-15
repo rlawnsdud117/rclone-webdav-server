@@ -23,6 +23,9 @@ else
   write="$3"
 fi
 
+echo "test: $4"
+    /bin/bash
+
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
 fi
