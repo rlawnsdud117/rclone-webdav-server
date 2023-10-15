@@ -1,30 +1,12 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-  username="username"
-else
-  username="$1"
-fi
+username=${1:-"username"}
 
-if [ -z "$2" ]; then
-  password="password"
-else
-  password="$2"
-fi
-if [ -z "$3" ]; then
-  bwlimit="0"
-else
-  bwlimit="$3"
-fi
+password=${2:-"password"}
 
-if [ -z "$4" ]; then
-  write="writes"
-else
-  write="$3"
-fi
+bwlimit=${3:-"0"}
 
-echo "test: $4"
-    /bin/bash
+write=${4:-"writes"}
 
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
@@ -57,5 +39,5 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav $section_name: --addr 0.0.0.0:80 --config /data/config/rclone.conf  --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode=$4 --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --vfs-cache-mode=writes --bwlimit $bwlimit
+rclone serve webdav $section_name: --addr 0.0.0.0:80 --config /data/config/rclone.conf  --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode=$write --tpslimit 10 --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --bwlimit $bwlimit
 /bin/bash
