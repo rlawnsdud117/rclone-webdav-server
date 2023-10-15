@@ -1,13 +1,27 @@
 #!/bin/bash
 
-username=${1:-"username"}
+if [ -z "$1" ]; then
+  username="username"
+else
+  username="$1"
+fi
 
-password=${2:-"password"}
+if [ -z "$2" ]; then
+  password="password"
+else
+  password="$2"
+fi
+if [ -z "$3" ]; then
+  bwlimit="0"
+else
+  bwlimit="$3"
+fi
 
-bwlimit=${3:-"0"}
-
-write=${4:-"writes"}
-
+if [ -z "$4" ]; then
+  write="writes"
+else
+  write="$4"
+fi 
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
 fi
