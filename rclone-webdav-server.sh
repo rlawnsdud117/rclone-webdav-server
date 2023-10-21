@@ -60,5 +60,24 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav "$section_name": --addr 0.0.0.0:80 --config /data/config/rclone.conf --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode writes --tpslimit $tpslimit --tpslimit-burst 10 --dir-cache-time=160h --buffer-size=64M --vfs-read-chunk-size=2M --vfs-read-chunk-size-limit=2G --vfs-cache-max-age=5m --bwlimit $bwlimit $readonly
+sed -i '/KeepAlive / s/Off/On/' /etc/apache2/apache2.conf
+sed -i '/KeepAliveTimeout / s/5/15/' /etc/apache2/apache2.conf
+sed -i '/Timeout / s/300/600/' /etc/apache2/apache2.conf
+
+rclone serve webdav "$section_name":\
+--addr 0.0.0.0:80 \
+--config /data/config/rclone.conf \
+--log-file /data/Log/log.log \
+--htpasswd /etc/apache2/webdav.password \
+--etag-hash auto \
+--vfs-cache-mode full \
+--tpslimit $tpslimit \
+--tpslimit-burst 10 \
+--dir-cache-tie=160h \
+--buffer-size=64mM\ 
+--vfs-read-chunk-size=2M \
+--vfs-read-chunk-size-limit=2G \
+--vfs-cache-max-age=5m \
+--bwlimit $bwlimit \
+$readonly
 /bin/bash
