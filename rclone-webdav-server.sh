@@ -35,7 +35,9 @@ fi
 if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
-
+if [ ! -d "/data/cache" ]; then
+    mkdir -p "/data/cache"
+fi
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
@@ -71,13 +73,14 @@ rclone serve webdav "$section_name": \
   --htpasswd /etc/apache2/webdav.password \
   --etag-hash auto \
   --vfs-cache-mode full \
+  --cache-dir /data/cache \
   --tpslimit $tpslimit \
-  --tpslimit-burst $tpslimit \
+  --tpslimit-burst 10 \
   --dir-cache-time 160h \
-  --buffer-size 128M \
-  --vfs-read-chunk-size 128M \
-  --vfs-read-chunk-size-limit 10G \
-  --vfs-cache-max-age 3m \
+  --buffer-size 64M \
+  --vfs-read-chunk-size 2M \
+  --vfs-read-chunk-size-limit 2G \
+  --vfs-cache-max-age 5m \
   --bwlimit $bwlimit \
   $readonly
 /bin/bash
