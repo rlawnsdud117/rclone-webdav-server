@@ -72,12 +72,12 @@ rclone serve webdav "$section_name": \
   --etag-hash auto \
   --vfs-cache-mode full \
   --tpslimit $tpslimit \
-  --tpslimit-burst 10 \
+  --tpslimit-burst $tpslimit \
   --dir-cache-time 160h \
-  --buffer-size 64M \
-  --vfs-read-chunk-size 2M \
-  --vfs-read-chunk-size-limit 2G \
-  --vfs-cache-max-age 5m \
+  --buffer-size 128M \
+  --vfs-read-chunk-size 128M \
+  --vfs-read-chunk-size-limit 10G \
+  --vfs-cache-max-age 3m \
   --bwlimit $bwlimit \
   $readonly
 /bin/bash
