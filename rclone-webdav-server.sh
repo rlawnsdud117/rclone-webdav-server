@@ -1,32 +1,16 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-  username="username"
-else
-  username="$1"
-fi
-
-if [ -z "$2" ]; then
-  password="password"
-else
-  password="$2"
-fi
-if [ -z "$3" ]; then
-  bwlimit="0"
-else
-  bwlimit="$3"
-fi
-
-if [ "$4" = "on" ]; then
+# Default values
+username="${1:-username}"
+password="${2:-password}"
+bwlimit="${3:-0}"
+readonly="${4:-off}"
+bwlimit="${3:-}"
+# Check if readonly is "on" (case-insensitive)
+if [[ "${readonly,,}" = "on" ]]; then
   readonly="--read-only"
 else
   readonly=""
-fi
-
-if [ -z "$5" ]; then
-  tpslimit="10"
-else
-  tpslimit="$5"
 fi
 
 if [ ! -d $"/data/config" ]; then
@@ -81,6 +65,6 @@ rclone serve webdav "$section_name": \
   --vfs-read-chunk-size 2M \
   --vfs-read-chunk-size-limit 2G \
   --vfs-cache-max-age 5m \
-  --bwlimit $bwlimit \
+  ${bwlimit:+--bwlimit $bwlimit} \
   $readonly
 /bin/bash
