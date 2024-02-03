@@ -1,11 +1,33 @@
 #!/bin/bash
 
-# Default values
-username="${1:-username}"
-password="${2:-password}"
-bwlimit="${3:-0}"
-tpslimit="${4:-10}"
-readonly="${5:-off}"
+if [ -z "$1" ]; then
+  username="username"
+else
+  username="$1"
+fi
+
+if [ -z "$2" ]; then
+  password="password"
+else
+  password="$2"
+fi
+if [ -z "$3" ]; then
+  bwlimit="0"
+else
+  bwlimit="$3"
+fi
+
+if [ -z "$4" ]; then
+  tpslimit="0"
+else
+  tpslimit="$3"
+fi
+
+if [ -z "$5" ]; then
+  readonly="0"
+else
+  readonly="$3"
+fi
 
 # Check if readonly is "on" (case-insensitive)
 if [[ "${readonly,,}" = "on" ]]; then
