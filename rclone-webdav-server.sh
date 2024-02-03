@@ -47,9 +47,6 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-sed -i '/KeepAlive / s/Off/On/' /etc/apache2/apache2.conf
-sed -i '/KeepAliveTimeout / s/5/15/' /etc/apache2/apache2.conf
-sed -i '/Timeout / s/300/600/' /etc/apache2/apache2.conf
 
 rclone serve webdav "$section_name": \
   --addr 0.0.0.0:80 \
@@ -67,4 +64,6 @@ rclone serve webdav "$section_name": \
   --vfs-read-chunk-size-limit 2G \
   --vfs-cache-max-age 5m \
   ${bwlimit:+--bwlimit $bwlimit} \
-  $readonly &
+  $readonly \
+      /bin/bash
+
