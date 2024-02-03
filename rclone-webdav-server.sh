@@ -68,4 +68,3 @@ rclone serve webdav "$section_name": \
   --vfs-cache-max-age 5m \
   ${bwlimit:+--bwlimit $bwlimit} \
   $readonly
-/bin/bash
