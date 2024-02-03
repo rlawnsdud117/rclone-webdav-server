@@ -5,11 +5,12 @@ password="${2:-password}"
 bwlimit="${3:-0}"
 tpslimit="${4:-0}"
 readonly="${5:-off}"
+cachefolder="${6:-off}"
+
 readonly_flag=$""
 if [[ "${readonly,,}" = "on" ]]; then
   readonly_flag=$"--read-only"
 fi
-
 
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
@@ -17,8 +18,13 @@ fi
 if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
+cachefolder_flag=$""
+if [[ "${cachefolder,,}" = "on" ]]; then
+  cachefolder_flag=$"-cache-dir /data/cache"
+
 if [ ! -d "/data/cache" ]; then
     mkdir -p "/data/cache"
+fi
 fi
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
@@ -47,6 +53,7 @@ echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.passwor
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config /data/config/rclone.conf \
+   $cachefolder_flag \
    --log-file /data/Log/log.log \
    --htpasswd /etc/apache2/webdav.password \
    --etag-hash auto \
