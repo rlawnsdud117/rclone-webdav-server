@@ -60,7 +60,7 @@ fi
 config_file=$"/data/config/rclone.conf"
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
-  echo "첫 번째 줄에서 유효한 섹션 이름을 찾지 못했습니다."
+  echo "Unable to find a valid section name in the first line.."
   exit 1
 fi
   
