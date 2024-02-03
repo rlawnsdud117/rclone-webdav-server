@@ -5,7 +5,7 @@ username="${1:-username}"
 password="${2:-password}"
 bwlimit="${3:-0}"
 readonly="${4:-off}"
-bwlimit="${3:-}"
+
 # Check if readonly is "on" (case-insensitive)
 if [[ "${readonly,,}" = "on" ]]; then
   readonly="--read-only"
