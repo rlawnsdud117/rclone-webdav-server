@@ -27,7 +27,7 @@ fi
 
 cachefolder_flag=$""
 if [[ "${cachefolder,}" == "on" ]]; then
-    cachefolder_flag=$"-cache-dir /data/cache"
+    cachefolder_flag=$"--cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
         mkdir -p "/data/cache"
     fi
