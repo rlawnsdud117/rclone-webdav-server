@@ -62,7 +62,7 @@ rclone serve webdav "$section_name": \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
    --log-file /data/Log/log.log \
-   --htpasswd /etc/apache2/webdav.password \
+   --htpasswd /etc/nginx/webdav.password \
    --etag-hash auto \
    --vfs-cache-mode full \
    --cache-dir /data/cache \
