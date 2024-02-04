@@ -25,12 +25,11 @@ if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
 
-cachefolder_flag=""
+cachefolder_flag=$""
 if [[ "$cachefolder,," == "on" ]]; then
-    cachefolder_flag="-cache-dir /data/cache"
+    cachefolder_flag=$"-cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
         mkdir -p "/data/cache"
-        echo "/data/cache 생성 완료"
     fi
 fi
 
