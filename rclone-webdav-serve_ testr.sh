@@ -54,9 +54,8 @@ fi
 # [와 ] 문자 제거하여 섹션 이름만 추출
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
-# Apache 웹 서버에서 WebDAV와 Basic Authentication 설정을 진행합니다.
-rm -f /etc/apache2/webdav.password
-echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
+rm -f "/etc/nginx/webdav.password"
+echo "$username:$(openssl passwd -apr1 $password)" > "/etc/nginx/webdav.password"
 
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
