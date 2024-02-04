@@ -24,15 +24,17 @@ fi
 if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
-cachefolder_lowercase="${cachefolder,,}"
-cachefolder_flag=$""
-if [[ "$cachefolder_lowercase,," == "on" ]]; then
-    cachefolder_flag=$"-cache-dir /data/cache"
+
+cachefolder_flag=""
+if [[ "$cachefolder" == "on" ]]; then
+    cachefolder_flag="-cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
         mkdir -p "/data/cache"
     fi
-fi
+fi  
 
+# 대소문자 구별하여 출력
+echo "cachefolder_flag 값은 $cachefolder_flag 입니다."
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
