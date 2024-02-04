@@ -4,8 +4,8 @@ username="${1:-username}"
 password="${2:-password}"
 bwlimit="${3:-0}"
 tpslimit="${4:-0}"
-readonly="${5:-off}"
-cachefolder="${6:-off}"
+readonly="${5:-}"
+cachefolder="${6:-}"
 
 bwlimit_flag=$""
 if [[ "$bwlimit" != "0" ]]; then
