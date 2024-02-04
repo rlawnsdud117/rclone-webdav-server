@@ -54,15 +54,16 @@ fi
 # [와 ] 문자 제거하여 섹션 이름만 추출
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
-rm -f "/etc/nginx/webdav.password"
-echo "$username:$(openssl passwd -apr1 $password)" > "/etc/nginx/webdav.password"
+
+rm -f /etc/apache2/webdav.password
+echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
    --log-file /data/Log/log.log \
-   --htpasswd /etc/nginx/webdav.password \
+   --htpasswd /etc/apache2/webdav.password \
    --etag-hash auto \
    --vfs-cache-mode full \
    --cache-dir /data/cache \
