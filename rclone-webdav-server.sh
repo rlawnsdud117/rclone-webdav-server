@@ -5,27 +5,30 @@ password="${2:-password}"
 bwlimit="${3:-0}"
 tpslimit="${4:-0}"
 readonly="${5:-off}"
-cachefolder="${6:-off}"
+ccahefolder="${6:-off}"
 
 readonly_flag=$""
 if [[ "${readonly,,}" = "on" ]]; then
   readonly_flag=$"--read-only"
 fi
 
+#/data/config 
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
 fi
 if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
-cachefolder_flag=$""
-if [[ "${cachefolder,,}" = "on" ]]; then
-  cachefolder_flag=$"-cache-dir /data/cache"
 
-if [ ! -d "/data/cache" ]; then
-    mkdir -p "/data/cache"
+cachefolder_flag=$""
+if [[ "${cachefolder,,}" == "on" ]]; then
+    cachefolder_flag="-cache-dir /data/cache"
+
+    if [ ! -d "/data/cache" ]; then
+        mkdir -p "/data/cache"
+    fi
 fi
-fi
+
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
