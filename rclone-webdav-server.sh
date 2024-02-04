@@ -25,14 +25,15 @@ if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
 
-cachefolder_flag=$""
+cachefolder_flag=""
 if [[ "$cachefolder" == "on" ]]; then
     cachefolder_flag="-cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
         mkdir -p "/data/cache"
+        echo "/data/cache 생성 완료"
     fi
-    echo "cachefolder 작동 테스트" $cachefolder
 fi
+
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
