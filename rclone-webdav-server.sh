@@ -31,6 +31,7 @@ if [[ "$cachefolder" == "on" ]]; then
     if [ ! -d "/data/cache" ]; then
         mkdir -p "/data/cache"
     fi
+    echo "cachefolder 작동 테스트" $cachefolder
 fi
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
