@@ -7,14 +7,14 @@ tpslimit="${4:-0}"
 readonly="${5:-off}"
 ccahefolder="${6:-off}"
 
+bwlimit_flag=$""
+if [[ "$bwlimit" != "0" ]]; then
+  bwlimit_flag=$"--bwlimit $bwlimit"
+fi
+
 readonly_flag=$""
 if [[ "${readonly,,}" = "on" ]]; then
   readonly_flag=$"--read-only"
-fi
-
-bwlimit_flag=$""
-if [[ "$bwlimit" != "0" ]]; then
-  bwlimit_flag="--bwlimit $bwlimit"
 fi
 
 #/data/config 
