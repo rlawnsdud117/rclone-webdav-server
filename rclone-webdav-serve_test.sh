@@ -73,5 +73,5 @@ rclone serve webdav "$section_name": \
    --vfs-read-chunk-size 2M \
    --vfs-read-chunk-size-limit 2G \
    --vfs-cache-max-age 5m \
-   ${bwlimit:+--bwlimit $bwlimit} \
+   $bwlimit_flag \
    $readonly_flag
