@@ -12,6 +12,11 @@ if [[ "${readonly,,}" = "on" ]]; then
   readonly_flag=$"--read-only"
 fi
 
+bwlimit_flag=$""
+if [[ "$bwlimit" != "0" ]]; then
+  bwlimit_flag="--bwlimit $bwlimit"
+fi
+
 #/data/config 
 if [ ! -d $"/data/config" ]; then
     mkdir -p "/data/config"
