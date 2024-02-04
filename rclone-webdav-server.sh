@@ -5,7 +5,7 @@ password="${2:-password}"
 bwlimit="${3:-0}"
 tpslimit="${4:-0}"
 readonly="${5:-off}"
-ccahefolder="${6:-off}"
+cachefolder="${6:-off}"
 
 bwlimit_flag=$""
 if [[ "$bwlimit" != "0" ]]; then
