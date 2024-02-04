@@ -24,9 +24,9 @@ fi
 if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
-
+cachefolder_lowercase="${cachefolder,,}"
 cachefolder_flag=$""
-if [[ "$cachefolder,," == "on" ]]; then
+if [[ "$cachefolder_lowercase,," == "on" ]]; then
     cachefolder_flag=$"-cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
         mkdir -p "/data/cache"
