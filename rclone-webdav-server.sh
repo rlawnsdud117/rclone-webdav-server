@@ -16,7 +16,6 @@ readonly_flag=$""
 if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
-echo "readonly_flag 값은 $readonly_flag 입니다."
 
 #/data/config 
 if [ ! -d $"/data/config" ]; then
@@ -33,9 +32,6 @@ if [[ "${cachefolder,,}" == "on" ]]; then
         mkdir -p "/data/cache"
     fi
 fi  
-
-# 대소문자 구별하여 출력
-echo "cachefolder_flag 값은 $cachefolder_flag 입니다."
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
