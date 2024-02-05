@@ -13,7 +13,7 @@ if [[ "$bwlimit" != "0" ]]; then
 fi
 
 readonly_flag=$""
-if [[ "${readonly,,}" == "on" ]]; then
+if [[ "${readonly,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
 
