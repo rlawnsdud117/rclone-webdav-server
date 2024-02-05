@@ -8,8 +8,8 @@ readonly="${5:-}"
 cachefolder="${6:-}"
 
 bwlimit_flag=$""
-if [[ "$bwlimit" != "0" ]]; then
-  bwlimit_flag=$"--bwlimit $bwlimit"
+if [[ ! -z "$bwlimit" && "$bwlimit" != "0" ]]; then
+  bwlimit_flag="--bwlimit $bwlimit"
 fi
 
 readonly_flag=$""
