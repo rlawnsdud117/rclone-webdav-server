@@ -35,7 +35,7 @@ if [[ "${cachefolder,,}" == "on" ]]; then
 fi  
 
 # 대소문자 구별하여 출력
-echo "cachefolder 값은 $cachefolder 입니다."
+echo "cachefolder_flag 값은 $cachefolder_flag 입니다."
 
 # rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
