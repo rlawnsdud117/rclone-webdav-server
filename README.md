@@ -14,7 +14,7 @@ rclone config
 ```
 4. Download the script using curl:
 ```
-curl -o /webdav-server.sh https://raw.githubusercontent.com/rlawnsdud117/rclone-webdav-server/main/webdav-server.sh
+curl -o /webdav-server.sh https://raw.githubusercontent.com/rlawnsdud117/rclone-webdav-server/main/rclone-webdav-server.sh
 ```
 5. Provide execute permission to the sh file:
 ```
