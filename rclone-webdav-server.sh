@@ -13,7 +13,7 @@ if [[ "$bwlimit" != "0" ]]; then
 fi
 
 readonly_flag=$""
-if [[ "${readonly,}" == "on" ]]; then
+if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
 
@@ -26,7 +26,7 @@ if [ ! -d "/data/Log" ]; then
 fi
 
 cachefolder_flag=$""
-if [[ "${cachefolder,}" == "on" ]]; then
+if [[ "${cachefolder,,}" == "on" ]]; then
     cachefolder_flag="--cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
         mkdir -p "/data/cache"
