@@ -16,6 +16,7 @@ readonly_flag=$""
 if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
+echo "readonly_flag 값은 $readonly_flag 입니다."
 
 #/data/config 
 if [ ! -d $"/data/config" ]; then
