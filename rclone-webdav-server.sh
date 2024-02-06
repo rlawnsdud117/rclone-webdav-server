@@ -2,8 +2,8 @@
 
 username="${1:-username}"
 password="${2:-password}"
-bwlimit="${3:-0}"
-tpslimit="${4:-0}"
+bwlimit="${3:-}"
+tpslimit="${4:-}"
 readonly="${5:-}"
 cachefolder="${6:-}"
 
@@ -74,3 +74,4 @@ rclone serve webdav "$section_name": \
    --vfs-cache-max-age 5m \
    $bwlimit_flag \
    $readonly_flag
+    /bin/bash
