@@ -37,6 +37,7 @@ fi
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
+    /bin/bash
     fi
   mkdir -p /data
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
@@ -56,21 +57,5 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav "$section_name": \
-   --addr 0.0.0.0:80 \
-   --config /data/config/rclone.conf \
-   $cachefolder_flag \
-   --log-file /data/Log/log.log \
-   --htpasswd /etc/apache2/webdav.password \
-   --etag-hash auto \
-   --vfs-cache-mode full \
-   --tpslimit $tpslimit \
-   --tpslimit-burst 100 \
-   --dir-cache-time 160h \
-   --buffer-size 64M \
-   --vfs-read-chunk-size 2M \
-   --vfs-read-chunk-size-limit 2G \
-   --vfs-cache-max-age 5m \
-   $bwlimit_flag \
-   $readonly_flag \
-    /bin/bash
+rclone serve webdav "$section_name" --addr 0.0.0.0:80 --config /data/config/rclone.conf $cachefolder_flag --log-file /data/Log/log.log --htpasswd /etc/apache2/webdav.password --etag-hash auto --vfs-cache-mode full --tpslimit $tpslimit --tpslimit-burst 100 --dir-cache-time 160h --buffer-size 64M --vfs-read-chunk-size 2M --vfs-read-chunk-size-limit 2G --vfs-cache-max-age 5m $bwlimit_flag $readonly_flag 
+/bin/bash
