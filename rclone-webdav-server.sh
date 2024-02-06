@@ -2,14 +2,14 @@
 
 username="${1:-username}"
 password="${2:-password}"
-bwlimit="${3:-}"
-tpslimit="${4:-}"
+bwlimit="${3:-0}"
+tpslimit="${4:-0}"
 readonly="${5:-}"
 cachefolder="${6:-}"
 
 bwlimit_flag=$""
-if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
-  bwlimit_flag="--bwlimit $bwlimit"
+if [[ "$bwlimit" != "0" ]]; then
+  bwlimit_flag=$"--bwlimit $bwlimit"
 fi
 
 readonly_flag=$""
@@ -38,7 +38,7 @@ if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
     /bin/bash
-    fi
+  fi
   mkdir -p /data
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
@@ -57,21 +57,20 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 rm -f /etc/apache2/webdav.password
 echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
 
-rclone serve webdav "$section_name":\
-   --addr 0.0.0.0:80\
-   --config /data/config/rclone.conf\
-   $cachefolder_flag\
-   --log-file /data/Log/log.log\
-   --htpasswd /etc/apache2/webdav.password\
-   --etag-hash auto\
-   --vfs-cache-mode full\
-   --tpslimit $tpslimit\
-   --tpslimit-burst 10\
-   --dir-cache-time 160h\
-   --buffer-size 64M\
-   --vfs-read-chunk-size 2M\
-   --vfs-read-chunk-size-limit 2G\
-   --vfs-cache-max-age 5m\
-   $bwlimit_flag\
+rclone serve webdav "$section_name": \
+   --addr 0.0.0.0:80 \
+   --config /data/config/rclone.conf \
+   $cachefolder_flag \
+   --log-file /data/Log/log.log \
+   --htpasswd /etc/apache2/webdav.password \
+   --etag-hash auto \
+   --vfs-cache-mode full \
+   --tpslimit $tpslimit \
+   --tpslimit-burst 10 \
+   --dir-cache-time 160h \
+   --buffer-size 64M \
+   --vfs-read-chunk-size 2M \
+   --vfs-read-chunk-size-limit 2G \
+   --vfs-cache-max-age 5m \
+   $bwlimit_flag \
    $readonly_flag
-/bin/bash
