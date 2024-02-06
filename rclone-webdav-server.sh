@@ -37,8 +37,7 @@ fi
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
     echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
-    /bin/bash
-  fi
+    fi
   mkdir -p /data
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
