@@ -47,7 +47,7 @@ config_file=$"/data/config/rclone.conf"
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   echo "Unable to find a valid section name in the first line.."
-  exit 1
+  /bin/bash
 fi
   
 # [와 ] 문자 제거하여 섹션 이름만 추출
