@@ -54,15 +54,23 @@ fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
 
-rm -f /etc/apache2/webdav.password
-echo "$username:$(openssl passwd -apr1 $password)" > /etc/apache2/webdav.password
+    if [ ! -d "/etc/webdav" ]; then
+        mkdir -p "/etc/webdav"
+    fi
+
+    
+    htpasswd_flag=$" /etc/webdav/htpasswd"
+
+rm -f $htpasswd_flag
+echo "$username:$(openssl passwd -apr1 $password)" > $htpasswd_flag
+
 
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
    --log-file /data/Log/log.log \
-   --htpasswd /etc/apache2/webdav.password \
+   --htpasswd $htpasswd_flag \
    --etag-hash auto \
    --vfs-cache-mode full \
    --tpslimit $tpslimit \
