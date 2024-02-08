@@ -6,7 +6,7 @@ This script allows you to utilize various cloud services through WebDAV on Apach
 1. Download this script.
 2. Before running the script, install the necessary packages using the following command:
 ```
-apt-get update && apt-get install -y curl unzip apache2 && curl https://rclone.org/install.sh | bash
+apt-get update && apt-get install -y curl unzip openssl && curl https://rclone.org/install.sh | bash
 ```
 3. Configure rclone by running the command:
 ```
