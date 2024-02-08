@@ -11,3 +11,5 @@ Unless serious bugs/errors arise in my script, it is highly likely that version 
 1. I've added a feature (cachefolder) to enable or disable the upload and download cache folder.
 2. The issue where the file transfer rate limit (tpslimit) wasn't functioning has been resolved.
 3. The problem where the speed limit (bwlimit) wasn't working when it was off, empty, or set to 0 has been fixed.
+## Version 0.0.5 has been released.
+1. I removed apache2 from the Dockerfile script because I don't use it in rclone. Instead, I'm utilizing the built-in web server within rclone, and I'm creating user accounts using openssl.
