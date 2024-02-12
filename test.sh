@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Set default values for parameters if not provided
 username="${1:-username}"
 password="${2:-password}"
 bwlimit="${3:-}"
@@ -7,73 +8,56 @@ tpslimit="${4:-}"
 readonly="${5:-}"
 cachefolder="${6:-}"
 
-bwlimit_flag=$""
+# Set flags based on provided parameters
+bwlimit_flag=""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
-  bwlimit_flag=$"--bwlimit $bwlimit"
+  bwlimit_flag="--bwlimit $bwlimit"
 fi
 
-readonly_flag=$""
+readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
 
-#/data/config 
-if [ ! -d $"/data/config" ]; then
-    mkdir -p "/data/config"
-fi
-if [ ! -d "/data/Log" ]; then
-    mkdir -p "/data/Log"
-fi
-
-cachefolder_flag=$""
+# Create necessary directories if they don't exist
+mkdir -p "/data/config"
+mkdir -p "/data/Log"
+mkdir -p "/etc/webdav"
 if [[ "${cachefolder,,}" == "on" ]]; then
-    cachefolder_flag="--cache-dir /data/cache"
-    if [ ! -d "/data/cache" ]; then
-        mkdir -p "/data/cache"
-    fi
-fi  
+    mkdir -p "/data/cache"
+fi
 
-# rclone.conf 파일이 없는 경우 생성하도록 합니다.
+# Check if rclone.conf exists and copy it if not
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
-    echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
-    /bin/bash
+    echo "rclone.conf does not exist. Please run 'rclone config' to configure it!" /bin/bash
   fi
   mkdir -p /data
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
 
-config_file=$"/data/config/rclone.conf"
+# Get section name from rclone.conf
+config_file="/data/config/rclone.conf"
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
-  echo "Unable to find a valid section name in the first line.."
-  /bin/bash
+  echo "Unable to find a valid section name in the first line."  /bin/bash
 fi
-  
-# [와 ] 문자 제거하여 섹션 이름만 추출
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
+# Generate htpasswd file
+htpasswd_file="/etc/webdav/htpasswd"
+echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 
-    if [ ! -d "/etc/webdav" ]; then
-        mkdir -p "/etc/webdav"
-    fi
-
-    
-    htpasswd_flag=$" /etc/webdav/htpasswd"
-
-rm -f $htpasswd_flag
-echo "$username:$(openssl passwd -apr1 $password)" > $htpasswd_flag
-
-
+# Run rclone serve webdav command
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
-   --config /data/config/rclone.conf \
-   $cachefolder_flag \
+   --config "$config_file" \
+   --cache-dir /data/cache \
    --log-file /data/Log/log.log \
-   --htpasswd $htpasswd_flag \
+   --htpasswd "$htpasswd_file" \
    --etag-hash auto \
    --vfs-cache-mode minimal \
-   --tpslimit $tpslimit \
+   --tpslimit "$tpslimit" \
    --tpslimit-burst 100 \
    --dir-cache-time 160h \
    --buffer-size 64M \
@@ -82,4 +66,6 @@ rclone serve webdav "$section_name": \
    --vfs-cache-max-age 5m \
    $bwlimit_flag \
    $readonly_flag
-    /bin/bash
+
+# Start interactive shell
+/bin/bash
