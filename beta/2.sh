@@ -60,7 +60,7 @@ fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
 mkdir -p "/etc/webdav"
-#htpasswd_flag=$" /etc/webdav/htpasswd"
+htpasswd_flag=$" /etc/webdav/htpasswd"
 #rm -f $htpasswd_flag
 #echo "$username:$(openssl passwd -apr1 $password)" > $htpasswd_flag
 
