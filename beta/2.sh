@@ -60,13 +60,13 @@ fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
 mkdir -p "/etc/webdav"
-htpasswd_flag=$" /etc/webdav/htpasswd"
-rm -f $htpasswd_flag
-echo "$username:$(openssl passwd -apr1 $password)" > $htpasswd_flag
+#htpasswd_flag=$" /etc/webdav/htpasswd"
+#rm -f $htpasswd_flag
+#echo "$username:$(openssl passwd -apr1 $password)" > $htpasswd_flag
 
 for user_info in $USERS; do
     username=$(echo "$user_info" | cut -d: -f1)
     password=$(echo "$user_info" | cut -d: -f2)
-    echo "Username: $username, Password: $password"
-#    echo "$username:$(openssl passwd -apr1 $password)" >> "$HTPASSWD_FILE"
+    echo "Username: $username, Password: $password" /bin/bash
+    echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_flag"
 done
