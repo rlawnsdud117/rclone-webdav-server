@@ -6,6 +6,12 @@ bwlimit="${3:-}"
 tpslimit="${4:-}"
 readonly="${5:-}"
 cachefolder="${6:-}"
+debug="${7:-}"
+
+debug_flag=$""
+if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
+  debug_flag=$"--log-file /data/log/log.log"
+fi
 
 bwlimit_flag=$""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
@@ -69,7 +75,7 @@ rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
-   --log-file /data/Log/log.log \
+   $debug_flag \
    --htpasswd $htpasswd_flag \
    --etag-hash auto \
    --vfs-cache-mode full \
