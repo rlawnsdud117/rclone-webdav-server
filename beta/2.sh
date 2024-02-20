@@ -77,7 +77,7 @@ rclone serve webdav "$section_name": \
    --htpasswd $htpasswd_flag \
    --etag-hash auto \
    --vfs-cache-mode full \
-   --tpslimit "$tpslimit" \
+   --tpslimit $tpslimit \
    --tpslimit-burst 100 \
    --dir-cache-time 160h \
    --buffer-size 64M \
