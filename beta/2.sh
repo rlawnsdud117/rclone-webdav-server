@@ -6,7 +6,6 @@ bwlimit="${3:-}"
 tpslimit="${4:-}"
 readonly="${5:-}"
 cachefolder="${6:-}"
-debug="${7:-}"
 
 debug_flag=$""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
@@ -67,7 +66,6 @@ for user_info in $USERS; do
     password=$(echo "$user_info" | cut -d: -f2)
     echo "$username:$(openssl passwd -apr1 $password)" >> $htpasswd_flag
 done
-
 
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
