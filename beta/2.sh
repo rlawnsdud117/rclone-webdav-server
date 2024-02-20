@@ -67,3 +67,23 @@ for user_info in $USERS; do
     password=$(echo "$user_info" | cut -d: -f2)
     echo "$username:$(openssl passwd -apr1 $password)" >> $htpasswd_flag
 done
+
+
+rclone serve webdav "$section_name": \
+   --addr 0.0.0.0:80 \
+   --config /data/config/rclone.conf \
+   $cachefolder_flag \
+   $debug_flag \
+   --htpasswd $htpasswd_flag \
+   --etag-hash auto \
+   --vfs-cache-mode full \
+   --tpslimit $tpslimit \
+   --tpslimit-burst 100 \
+   --dir-cache-time 160h \
+   --buffer-size 64M \
+   --vfs-read-chunk-size 2M \
+   --vfs-read-chunk-size-limit 2G \
+   --vfs-cache-max-age 5m \
+   $bwlimit_flag \
+   $readonly_flag
+    /bin/bash
