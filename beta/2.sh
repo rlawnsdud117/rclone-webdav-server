@@ -1,11 +1,10 @@
 #!/bin/bash
 
-username="${1:-username}"
-password="${2:-password}"
-bwlimit="${3:-}"
-tpslimit="${4:-}"
-readonly="${5:-}"
-cachefolder="${6:-}"
+bwlimit="${bwlimit:-}"
+tpslimit="${tpslimit:-}"
+readonly="${readonly:-}"
+cachefolder="${cachefolder:-}"
+
 
 debug_flag=$""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
