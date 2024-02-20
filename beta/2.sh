@@ -65,5 +65,5 @@ htpasswd_flag=$" /etc/webdav/htpasswd1"
 for user_info in $USERS; do
     username=$(echo "$user_info" | cut -d: -f1)
     password=$(echo "$user_info" | cut -d: -f2)
-    echo "$username:$(openssl passwd -apr1 $password)" > $htpasswd_flag
+    echo "$username:$(openssl passwd -apr1 $password)" >> $htpasswd_flag
 done
