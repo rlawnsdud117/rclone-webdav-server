@@ -1,10 +1,8 @@
 #!/bin/bash
-
-bwlimit="${bwlimit:-}"
-tpslimit="${tpslimit:-}"
-readonly="${readonly:-}"
-cachefolder="${cachefolder:-}"
-
+bwlimit="${1:-}"
+tpslimit="${2:-}"
+readonly="${3:-}"
+cachefolder="${4:-}"
 
 debug_flag=$""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
