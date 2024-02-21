@@ -4,6 +4,7 @@ tpslimit="${2:-}"
 readonly="${3:-}"
 cachefolder="${4:-}"
 readonly="${5:-}"
+debug="${5:-}"
 
 debug_flag=""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
@@ -76,8 +77,8 @@ echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config "$config_file" \
-   --cache-dir /data/cache \
-   --log-file /data/Log/log.log \
+   $cachefolder_flag \
+   $debug_flag \
    --htpasswd "$htpasswd_file" \
    --etag-hash auto \
    --vfs-cache-mode minimal \
