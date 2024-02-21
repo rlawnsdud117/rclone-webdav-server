@@ -67,10 +67,10 @@ fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
 section_name_with_path=""
-if [ -z "$pach" ] || [ "$pach" = "off" ]; then
+if [ -z "$path" ] || [ "$path" = "off" ]; then
     section_name_with_path="$section_name"
 else
-    section_name_with_path="$section_nam/$pach"
+    section_name_with_path="$section_nam/$path"
 fi
 
 
