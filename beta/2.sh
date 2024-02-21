@@ -83,7 +83,7 @@ for user_info in $USERS; do
     echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_flag"
 done
 
-rclone serve webdav "$section_name_with_path": \
+rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
