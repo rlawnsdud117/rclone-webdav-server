@@ -3,7 +3,7 @@ bwlimit="${1:-}"
 tpslimit="${2:-}"
 readonly="${3:-}"
 cachefolder="${4:-}"
-path="${5:-}"
+readonly="${5:-}"
 
 debug_flag=""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
@@ -18,11 +18,6 @@ fi
 tpslimit_flag=""
 if [[ "${tpslimit,,}" != "off" && "$tpslimit" != "0" && -n "$tpslimit" ]]; then
   tpslimit_flag="--tpslimit $tpslimit"
-fi
-
-path_flag=""
-if [[ "${path,,}" != "off" && "$path" != "0" && -n "$path" ]]; then
-  path_flag="$path"
 fi
 
 readonly_flag=""
@@ -46,10 +41,9 @@ if [[ "${cachefolder,,}" == "on" ]]; then
     fi
 fi  
 
-# rclone.conf 파일이 없는 경우 생성하도록 합니다.
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
-    echo "rclone.conf가 없습니다. 'rclone config'를 실행하여 구성하십시오!"
+    echo "rclone config file not found. Please run 'rclone config' to set it up!!"
     /bin/bash
   fi
   mkdir -p /data
@@ -79,7 +73,7 @@ htpasswd_file="/etc/webdav/htpasswd"
 echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 
 # Run rclone serve webdav command
-rclone serve webdav "$section_name/1": \
+rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config "$config_file" \
    --cache-dir /data/cache \
