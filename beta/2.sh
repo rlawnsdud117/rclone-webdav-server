@@ -69,7 +69,6 @@ for user_info in $USERS; do
     echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_file"
 done
 
-# rclone serve webdav 명령 실행
 rclone serve webdav $section_name: \
    --addr 0.0.0.0:80 \
    --config $config_file \
