@@ -3,7 +3,6 @@ bwlimit="${1:-}"
 tpslimit="${2:-}"
 readonly="${3:-}"
 cachefolder="${4:-}"
-path="${5:-}"
 
 debug_flag=$""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
@@ -65,6 +64,14 @@ fi
 # [와 ] 문자 제거하여 섹션 이름만 추출
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
+$section_name_with_path=$""
+if [ -z "$pach" ] || [ "$pach" = "off" ]; then
+    section_name_with_path="$section_name"
+else
+    section_name_with_path="${section_name}/$pach"
+fi
+
+
 mkdir -p "/etc/webdav"
 htpasswd_flag=$" /etc/webdav/htpasswd1"
 
@@ -74,7 +81,7 @@ for user_info in $USERS; do
     echo "$username:$(openssl passwd -apr1 $password)" >> $htpasswd_flag
 done
 
-rclone serve webdav "$section_name/$path_flag": \
+rclone serve webdav "$section_name_with_path": \
    --addr 0.0.0.0:80 \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
