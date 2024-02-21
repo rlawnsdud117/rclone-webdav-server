@@ -3,6 +3,7 @@ bwlimit="${1:-}"
 tpslimit="${2:-}"
 readonly="${3:-}"
 cachefolder="${4:-}"
+path="${5:-}"
 
 debug_flag=$""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
@@ -12,6 +13,15 @@ fi
 bwlimit_flag=$""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
   bwlimit_flag=$"--bwlimit $bwlimit"
+
+tpslimit_flag=$""
+if [[ "${tpslimit,,}" != "off" && "$tpslimit" != "0" && -n "$tpslimit" ]]; then
+  tpslimit_flag=$"--tpslimit $tpslimit"
+fi
+
+path_flag=$""
+if [[ "${path,,}" != "off" && "$path" != "0" && -n "$path" ]]; then
+  path_flag=$"$path"
 fi
 
 readonly_flag=$""
@@ -64,7 +74,7 @@ for user_info in $USERS; do
     echo "$username:$(openssl passwd -apr1 $password)" >> $htpasswd_flag
 done
 
-rclone serve webdav "$section_name": \
+rclone serve webdav "$section_name/$path_flag": \
    --addr 0.0.0.0:80 \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
@@ -72,7 +82,7 @@ rclone serve webdav "$section_name": \
    --htpasswd $htpasswd_flag \
    --etag-hash auto \
    --vfs-cache-mode full \
-   --tpslimit $tpslimit \
+   $tpslimit_flag \
    --tpslimit-burst 100 \
    --dir-cache-time 160h \
    --buffer-size 64M \
