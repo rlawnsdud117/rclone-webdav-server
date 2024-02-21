@@ -6,11 +6,6 @@ cachefolder="${4:-}"
 readonly="${5:-}"
 debug="${6:-}"
 
-debug_flag=""
-if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
-  debug_flag="--log-file /data/log/log.log"
-fi
-
 bwlimit_flag=""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
   bwlimit_flag="--bwlimit $bwlimit"
@@ -21,9 +16,22 @@ if [[ "${tpslimit,,}" != "off" && "$tpslimit" != "0" && -n "$tpslimit" ]]; then
   tpslimit_flag="--tpslimit $tpslimit"
 fi
 
+cachefolder_flag=""
+if [[ "${cachefolder,,}" == "on" ]]; then
+    cachefolder_flag="--cache-dir /data/cache"
+    if [ ! -d "/data/cache" ]; then
+        mkdir -p "/data/cache"
+    fi
+fi  
+
 readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
+fi
+
+debug_flag=""
+if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
+  debug_flag="--log-file /data/log/log.log"
 fi
 
 #/data/config 
@@ -34,13 +42,6 @@ if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
 
-cachefolder_flag=""
-if [[ "${cachefolder,,}" == "on" ]]; then
-    cachefolder_flag="--cache-dir /data/cache"
-    if [ ! -d "/data/cache" ]; then
-        mkdir -p "/data/cache"
-    fi
-fi  
 
 if [ ! -f /data/config/rclone.conf ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
@@ -51,16 +52,6 @@ if [ ! -f /data/config/rclone.conf ]; then
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
 
-
-mkdir -p "/etc/webdav"
-htpasswd_flag="/etc/webdav/htpasswd1"
-
-for user_info in $USERS; do
-    username=$(echo "$user_info" | cut -d: -f1)
-    password=$(echo "$user_info" | cut -d: -f2)
-    echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_flag"
-done
-
 # Get section name from rclone.conf
 config_file="/data/config/rclone.conf"
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
@@ -69,9 +60,14 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
 fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
-# Generate htpasswd file
-htpasswd_file="/etc/webdav/htpasswd"
-echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
+mkdir -p "/etc/webdav"
+htpasswd_file="/etc/webdav/htpasswd1"
+
+for user_info in $USERS; do
+    username=$(echo "$user_info" | cut -d: -f1)
+    password=$(echo "$user_info" | cut -d: -f2)
+    echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_flag"
+done
 
 # Run rclone serve webdav command
 rclone serve webdav "$section_name": \
