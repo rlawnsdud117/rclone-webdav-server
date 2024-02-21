@@ -61,7 +61,7 @@ fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
 mkdir -p "/etc/webdav"
-htpasswd_file="/etc/webdav/htpasswd1"
+htpasswd_file=$"/etc/webdav/htpasswd"
 
 for user_info in $USERS; do
     username=$(echo "$user_info" | cut -d: -f1)
