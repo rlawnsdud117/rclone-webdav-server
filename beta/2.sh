@@ -70,7 +70,7 @@ section_name_with_path=""
 if [ -z "$path" ] || [ "$path" = "off" ]; then
     section_name_with_path="$section_name"
 else
-    section_name_with_path="$section_nam/$path"
+    section_name_with_path="$section_name:$path"
 fi
 
 
