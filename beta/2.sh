@@ -6,17 +6,17 @@ cachefolder="${4:-}"
 readonly="${5:-}"
 debug="${6:-}"
 
-bwlimit_flag=""
+bwlimit_flag=$""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
-  bwlimit_flag="--bwlimit $bwlimit"
+  bwlimit_flag=$"--bwlimit $bwlimit"
 fi
 
-tpslimit_flag=""
+tpslimit_flag=$""
 if [[ "${tpslimit,,}" != "off" && "$tpslimit" != "0" && -n "$tpslimit" ]]; then
-  tpslimit_flag="--tpslimit $tpslimit"
+  tpslimit_flag=$"--tpslimit $tpslimit"
 fi
 
-cachefolder_flag=""
+cachefolder_flag=$""
 if [[ "${cachefolder,,}" == "on" ]]; then
     cachefolder_flag="--cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
@@ -24,14 +24,14 @@ if [[ "${cachefolder,,}" == "on" ]]; then
     fi
 fi  
 
-readonly_flag=""
+readonly_flag=$""
 if [[ "${readonly,,}" == "on" ]]; then
-  readonly_flag="--read-only"
+  readonly_flag=$"--read-only"
 fi
 
-debug_flag=""
+debug_flag=$""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
-  debug_flag="--log-file /data/log/log.log"
+  debug_flag=$"--log-file /data/log/log.log"
 fi
 
 #/data/config 
