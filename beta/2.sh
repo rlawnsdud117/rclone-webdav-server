@@ -66,16 +66,17 @@ htpasswd_file=$"/etc/webdav/htpasswd"
 for user_info in $USERS; do
     username=$(echo "$user_info" | cut -d: -f1)
     password=$(echo "$user_info" | cut -d: -f2)
-    echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_flag"
+    echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_file"
 done
 
 # Run rclone serve webdav command
-rclone serve webdav "$section_name": \
+rclone serve webdav $section_name: \
    --addr 0.0.0.0:80 \
-   --config "$config_file" \
+   --config $config_file \
    $cachefolder_flag \
    $debug_flag \
-   --htpasswd "$htpasswd_file" \
+   --htpasswd $htpasswd_file \   
+   --vfs-cache-mode full \
    --etag-hash auto \
    --vfs-cache-mode minimal \
    $tpslimit_flag \
