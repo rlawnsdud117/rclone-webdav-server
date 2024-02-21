@@ -70,7 +70,7 @@ for user_info in $USERS; do
 done
 
 # Run rclone serve webdav command
-rclone serve webdav "$section_name": \
+rclone serve webdav $section_name: \
    --addr 0.0.0.0:80 \
    --config $config_file \
    $cachefolder_flag \
