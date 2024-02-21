@@ -66,7 +66,7 @@ fi
 # [와 ] 문자 제거하여 섹션 이름만 추출
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
-section_name_with_path=""
+section_name_with_path=$""
 if [ -z "$path" ] || [ "$path" = "off" ]; then
     section_name_with_path="$section_name"
 else
