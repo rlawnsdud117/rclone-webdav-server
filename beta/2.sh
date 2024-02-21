@@ -4,39 +4,40 @@ tpslimit="${2:-}"
 readonly="${3:-}"
 cachefolder="${4:-}"
 
-debug_flag=$""
+debug_flag=""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
-  debug_flag=$"--log-file /data/log/log.log"
+  debug_flag="--log-file /data/log/log.log"
 fi
 
-bwlimit_flag=$""
+bwlimit_flag=""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
-  bwlimit_flag=$"--bwlimit $bwlimit"
+  bwlimit_flag="--bwlimit $bwlimit"
+fi
 
-tpslimit_flag=$""
+tpslimit_flag=""
 if [[ "${tpslimit,,}" != "off" && "$tpslimit" != "0" && -n "$tpslimit" ]]; then
-  tpslimit_flag=$"--tpslimit $tpslimit"
+  tpslimit_flag="--tpslimit $tpslimit"
 fi
 
-path_flag=$""
+path_flag=""
 if [[ "${path,,}" != "off" && "$path" != "0" && -n "$path" ]]; then
-  path_flag=$"$path"
+  path_flag="$path"
 fi
 
-readonly_flag=$""
+readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
 
 #/data/config 
-if [ ! -d $"/data/config" ]; then
+if [ ! -d "/data/config" ]; then
     mkdir -p "/data/config"
 fi
 if [ ! -d "/data/Log" ]; then
     mkdir -p "/data/Log"
 fi
 
-cachefolder_flag=$""
+cachefolder_flag=""
 if [[ "${cachefolder,,}" == "on" ]]; then
     cachefolder_flag="--cache-dir /data/cache"
     if [ ! -d "/data/cache" ]; then
@@ -54,7 +55,7 @@ if [ ! -f /data/config/rclone.conf ]; then
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
 
-config_file=$"/data/config/rclone.conf"
+config_file="/data/config/rclone.conf"
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   echo "Unable to find a valid section name in the first line.."
@@ -64,7 +65,7 @@ fi
 # [와 ] 문자 제거하여 섹션 이름만 추출
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
-$section_name_with_path=$""
+section_name_with_path=""
 if [ -z "$pach" ] || [ "$pach" = "off" ]; then
     section_name_with_path="$section_name"
 else
@@ -73,12 +74,12 @@ fi
 
 
 mkdir -p "/etc/webdav"
-htpasswd_flag=$" /etc/webdav/htpasswd1"
+htpasswd_flag="/etc/webdav/htpasswd1"
 
 for user_info in $USERS; do
     username=$(echo "$user_info" | cut -d: -f1)
     password=$(echo "$user_info" | cut -d: -f2)
-    echo "$username:$(openssl passwd -apr1 $password)" >> $htpasswd_flag
+    echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_flag"
 done
 
 rclone serve webdav "$section_name_with_path": \
@@ -86,7 +87,7 @@ rclone serve webdav "$section_name_with_path": \
    --config /data/config/rclone.conf \
    $cachefolder_flag \
    $debug_flag \
-   --htpasswd $htpasswd_flag \
+   --htpasswd "$htpasswd_flag" \
    --etag-hash auto \
    --vfs-cache-mode full \
    $tpslimit_flag \
@@ -98,4 +99,4 @@ rclone serve webdav "$section_name_with_path": \
    --vfs-cache-max-age 5m \
    $bwlimit_flag \
    $readonly_flag
-    /bin/bash
+/bin/bash
