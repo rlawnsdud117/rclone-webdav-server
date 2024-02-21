@@ -69,14 +69,14 @@ for user_info in $USERS; do
     echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_file"
 done
 
-# Run rclone serve webdav command
+# rclone serve webdav 명령 실행
 rclone serve webdav $section_name: \
    --addr 0.0.0.0:80 \
    --config $config_file \
    $cachefolder_flag \
    $debug_flag \
-   --htpasswd $htpasswd_file \   
-   --vfs-cache-mode full \  # Removed one instance here
+   --htpasswd $htpasswd_file \
+   --vfs-cache-mode full \
    --etag-hash auto \
    $tpslimit_flag \
    --tpslimit-burst 100 \
