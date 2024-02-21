@@ -4,7 +4,7 @@ tpslimit="${2:-}"
 readonly="${3:-}"
 cachefolder="${4:-}"
 readonly="${5:-}"
-debug="${5:-}"
+debug="${6:-}"
 
 debug_flag=""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
