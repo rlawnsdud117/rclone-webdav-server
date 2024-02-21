@@ -3,7 +3,7 @@ bwlimit="${1:-}"
 tpslimit="${2:-}"
 readonly="${3:-}"
 cachefolder="${4:-}"
-path="${4:-}"
+path="${5:-}"
 
 debug_flag=""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
