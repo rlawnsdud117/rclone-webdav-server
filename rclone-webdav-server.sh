@@ -7,6 +7,7 @@ bwlimit="${3:-}"
 tpslimit="${4:-}"
 readonly="${5:-}"
 cachefolder="${6:-}"
+debug="${7:-}"
 
 # Set flags based on provided parameters
 bwlimit_flag=""
@@ -18,6 +19,11 @@ readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
+debug_flag=$""
+if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
+  debug_flag=$"--log-file /data/log/log.log"
+fi
+
 
 # Create necessary directories if they don't exist
 mkdir -p "/data/config"
@@ -55,7 +61,7 @@ rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config "$config_file" \
    --cache-dir /data/cache \
-   --log-file /data/Log/log.log \
+   $debug_flag \
    --htpasswd "$htpasswd_file" \
    --etag-hash auto \
    --vfs-cache-mode minimal \
