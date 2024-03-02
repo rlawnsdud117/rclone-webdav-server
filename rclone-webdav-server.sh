@@ -29,8 +29,11 @@ fi
 mkdir -p "/data/config"
 mkdir -p "/data/Log"
 mkdir -p "/etc/webdav"
+cache_flag=""
+
 if [[ "${cachefolder,,}" == "on" ]]; then
     mkdir -p "/data/cache"
+    cache_fiag=$"--cache-dir /data/cache"
 fi
 
 config_file=$"/data/config/rclone.conf"
@@ -60,11 +63,11 @@ echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config "$config_file" \
-   --cache-dir /data/cache \
+   $cache_flag \  
+   --vfs-cache-mode writes \
    $debug_flag \
    --htpasswd "$htpasswd_file" \
    --etag-hash auto \
-   --vfs-cache-mode full \
    --tpslimit "$tpslimit" \
    --tpslimit-burst 100 \
    --dir-cache-time 160h \
