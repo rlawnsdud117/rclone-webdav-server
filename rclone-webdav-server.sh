@@ -24,11 +24,15 @@ debug_flag=""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
   debug_flag="--log-file /data/log/log.log"
 fi
-
+config_folder="/data/config"
+Log_folder="/data/Log"
+etc_webdav_folde="/etc/webdav"
 # Create necessary directories if they don't exist
-mkdir -p "/data/config"
-mkdir -p "/data/log"
-mkdir -p "/etc/webdav"
+if [ ! -d "$config_folder" ] && [ ! -d "$Log_folder"  ]&& [ ! -d "$etc_webdav_folde" ] ; then
+mkdir -p "$config_folder"
+mkdir -p "$Log_folder"
+mkdir -p "$etc_webdav_folde"
+fi
 
 cache_flag=""
 if [[ "${cachefolder,,}" == "on" ]]; then
