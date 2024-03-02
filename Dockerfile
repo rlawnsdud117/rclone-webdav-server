@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:jammy
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV username "user"
