@@ -49,6 +49,7 @@ config_file="/data/config/rclone.conf"
 if [ ! -f $config_file ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
     echo "rclone.conf does not exist. Please run 'rclone config' to configure it!" 
+    /bin/bash
   fi
   mkdir -p "$config_folder"
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
