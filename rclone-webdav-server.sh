@@ -25,13 +25,8 @@ if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
   debug_flag="--log-file /data/log/log.log"
 fi
 
-config_folder="/data/config"
 Log_folder="/data/Log"
-etc_webdav_folde="/etc/webdav"
-
-if [ ! -d "$config_folder" ]; then
-    mkdir -p "$config_folder"
-fi
+etc_webdav_folder="/etc/webdav"
 
 if [ ! -d "$Log_folder" ]; then
     mkdir -p "$Log_folder"
@@ -47,6 +42,7 @@ if [[ "${cachefolder,,}" == "on" ]]; then
     cache_flag="--cache-dir /data/cache"
 fi
 
+config_folder="/data/config"
 config_file="/data/config/rclone.conf"
 
 # Check if rclone.conf exists and copy it if not
@@ -54,7 +50,7 @@ if [ ! -f $config_file ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
     echo "rclone.conf does not exist. Please run 'rclone config' to configure it!" 
   fi
-  mkdir -p /data/config
+  mkdir -p "$config_folder"
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
 
