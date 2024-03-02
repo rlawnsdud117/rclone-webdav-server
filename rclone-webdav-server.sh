@@ -29,9 +29,15 @@ config_folder="/data/config"
 Log_folder="/data/Log"
 etc_webdav_folde="/etc/webdav"
 
-if [ ! -d "$config_folder" ] || [ ! -d "$Log_folder" ] || [ ! -d "$etc_webdav_folder" ]; then
+if [ ! -d "$config_folder" ]; then
     mkdir -p "$config_folder"
+fi
+
+if [ ! -d "$Log_folder" ]; then
     mkdir -p "$Log_folder"
+fi
+
+if [ ! -d "$etc_webdav_folder" ]; then
     mkdir -p "$etc_webdav_folder"
 fi
 
