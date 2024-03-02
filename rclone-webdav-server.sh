@@ -64,7 +64,7 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   /bin/bash
 
 fi
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -d ' ') 
 
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
