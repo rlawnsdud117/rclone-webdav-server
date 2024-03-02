@@ -47,8 +47,8 @@ fi
 # Get section name from rclone.conf
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9 _-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
-  echo "The first line in the rclone.conf file does not contain a valid section name."  /bin/bash
-  echo "Please verify the section name on the first line of the rclone.conf file."  /bin/bash
+  echo "The first line in the rclone.conf file does not contain a valid section name."
+  echo "Please verify the section name on the first line of the rclone.conf file."
 fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
