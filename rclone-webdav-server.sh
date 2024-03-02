@@ -63,6 +63,11 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   echo "Please verify the section name on the first line of the rclone.conf file."
   /bin/bash
 
+else
+  # Check if section name contains spaces
+  if [[ "$section_name" =~ [[:space:]] ]]; then
+    echo "The section name \"$section_name\" contains spaces. Please use it without spaces."
+  fi
 fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -d ' ') 
 
