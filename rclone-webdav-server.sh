@@ -19,31 +19,31 @@ readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
-debug_flag=$""
-if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
-  debug_flag=$"--log-file /data/log/log.log"
-fi
 
+debug_flag=""
+if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
+  debug_flag="--log-file /data/log/log.log"
+fi
 
 # Create necessary directories if they don't exist
 mkdir -p "/data/config"
-mkdir -p "/data/Log"
+mkdir -p "/data/log"
 mkdir -p "/etc/webdav"
 cache_flag=""
 
 if [[ "${cachefolder,,}" == "on" ]]; then
     mkdir -p "/data/cache"
-    cache_fiag=$"--cache-dir /data/cache"
+    cache_flag="--cache-dir /data/cache"
 fi
 
-config_file=$"/data/config/rclone.conf"
+config_file="/data/config/rclone.conf"
 
 # Check if rclone.conf exists and copy it if not
 if [ ! -f $config_file ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
-    echo "rclone.conf does not exist. Please run 'rclone config' to configure it!" /bin/bash
+    echo "rclone.conf does not exist. Please run 'rclone config' to configure it!" 
   fi
-  mkdir -p /data
+  mkdir -p /data/config
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
 
@@ -63,7 +63,7 @@ echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
    --config "$config_file" \
-   $cache_flag \  
+   $cache_flag \
    --vfs-cache-mode writes \
    $debug_flag \
    --htpasswd "$htpasswd_file" \
@@ -78,5 +78,3 @@ rclone serve webdav "$section_name": \
    $bwlimit_flag \
    $readonly_flag
 
-# Start interactive shell
-/bin/bash
