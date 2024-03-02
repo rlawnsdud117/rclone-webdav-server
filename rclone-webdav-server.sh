@@ -29,8 +29,8 @@ fi
 mkdir -p "/data/config"
 mkdir -p "/data/log"
 mkdir -p "/etc/webdav"
-cache_flag=""
 
+cache_flag=""
 if [[ "${cachefolder,,}" == "on" ]]; then
     mkdir -p "/data/cache"
     cache_flag="--cache-dir /data/cache"
@@ -78,3 +78,4 @@ rclone serve webdav "$section_name": \
    $bwlimit_flag \
    $readonly_flag
 
+/bin/bash
