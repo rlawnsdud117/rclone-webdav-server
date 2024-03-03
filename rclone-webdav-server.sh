@@ -66,23 +66,14 @@ fi
 # Extract section name from the matched line
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -s '[:space:]' '_' | tr -d '[:space:]')
 
-# Check for spaces in section name
-if [[ "$section_name" != "$(echo "$section_name" | tr -d '[:space:]')" ]]; then
-  # Replace section name in config file if it contains spaces
-  sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$section_name]/" "$config_file"
-  echo "Section name \"$section_name\" contains spaces. Replaced with \"$section_name\" in \"$config_file\"."
-fi
+# Get last word from the section name
+last_word=$(echo "$section_name" | grep -oE '[[:alnum:]_+-]+$')
 
-# Check if the last character of the section name is alphanumeric or a special character
-last_character=$(echo "${section_name: -1}")
-if [[ ! "$last_character" =~ [[:alnum:][:punct:]] ]]; then
-  # Get the last alphanumeric or special character
-  last_character=$(echo "$section_name" | grep -oE '[[:alnum:][:punct:]]+$')
-  # Remove the last character from the section name
-  section_name=${section_name%$last_character}
+# Check if the last word is the same as the original section name
+if [[ "$last_word" != "$section_name" ]]; then
   # Replace section name in config file
-  sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$section_name]/" "$config_file"
-  echo "Section name \"$section_name\" does not end with an alphanumeric or special character. Replaced with \"$section_name\" in \"$config_file\"."
+  sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$last_word]/" "$config_file"
+  echo "Section name \"$section_name\" contains non-alphanumeric characters. Replaced with \"$last_word\" in \"$config_file\"."
 fi
 
 
