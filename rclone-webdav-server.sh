@@ -63,7 +63,7 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   exit 1
 fi
 # Extract section name from the matched line
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -s '[:space:]' '_' | tr -d '[:space:]')
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -s '[:space:]' '_')
 
 echo "Original section name: $section_name"
 
