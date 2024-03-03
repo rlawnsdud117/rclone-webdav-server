@@ -69,7 +69,6 @@ original_section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
 if [[ "$original_section_name" != "$section_name" ]]; then
   section_name=$(echo "$original_section_name" | tr ' ' '_')
   sed -i "1s/$original_section_name/$section_name/" "$config_file"
-  echo "Section name \"$original_section_name\" contains spaces. Replaced with \"$section_name\" in \"$config_file\"."
 fi
 
 # Generate htpasswd file
