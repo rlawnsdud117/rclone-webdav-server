@@ -55,21 +55,36 @@ if [ ! -f $config_file ]; then
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
 
+
 # Get section name from rclone.conf
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9 _-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   echo "The first line in the rclone.conf file does not contain a valid section name."
   echo "Please verify the section name on the first line of the rclone.conf file."
-  exit 1
 fi
+
 # Extract section name from the matched line
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -s '[:space:]' '_' | tr -d '[:space:]')
 
 # Check for spaces in section name
 if [[ "$section_name" != "$(echo "$section_name" | tr -d '[:space:]')" ]]; then
+  # Replace section name in config file if it contains spaces
   sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$section_name]/" "$config_file"
   echo "Section name \"$section_name\" contains spaces. Replaced with \"$section_name\" in \"$config_file\"."
 fi
+
+# Check if the last character of the section name is alphanumeric or a special character
+last_character=$(echo "${section_name: -1}")
+if [[ ! "$last_character" =~ [[:alnum:][:punct:]] ]]; then
+  # Get the last alphanumeric or special character
+  last_character=$(echo "$section_name" | grep -oE '[[:alnum:][:punct:]]+$')
+  # Remove the last character from the section name
+  section_name=${section_name%$last_character}
+  # Replace section name in config file
+  sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$section_name]/" "$config_file"
+  echo "Section name \"$section_name\" does not end with an alphanumeric or special character. Replaced with \"$section_name\" in \"$config_file\"."
+fi
+
 
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
