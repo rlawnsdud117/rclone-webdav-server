@@ -63,7 +63,7 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   exit 1
 fi
 # Extract and replace spaces with '-'
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -d '[:space:]' | tr ' ' '-')
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -d '[:space:]' | tr ' ' '_')
 
 # Replace section name in the file
 sed -i "1s/.*/[$section_name]/" "$config_file"
