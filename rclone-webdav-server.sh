@@ -66,7 +66,7 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
 else
   # Check if section name contains spaces
   if [[ "$section_name" =~ [[:space:]] ]]; then
-    echo "The section name \"$section_name\" contains spaces. Please use it without spaces."
+    echo "The section name \"$section_name\" contains spaces. Please use it without spaces." /bin/bash
   fi
 fi
 section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -d ' ') 
