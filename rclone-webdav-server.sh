@@ -68,7 +68,7 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -s '[:space:]'
 echo "Original section name: $section_name"
 
 # Replace section name in config file if it contains spaces
-if [[ "$section_name" != "$(echo "$section_name" | tr -d '[:space:]')" ]]; then
+if [[ "$section_name" != "$(echo "$section_name")" ]]; then
   sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$section_name]/" "$config_file"
   echo "Section name \"$section_name\" contains spaces. Replaced with \"$section_name\" in \"$config_file\"."
 fi
