@@ -62,14 +62,14 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   /bin/bash 
   echo "Please verify the section name on the first line of the rclone.conf file."
   /bin/bash
-
-else
-  # Check if section name contains spaces
-  if [[ "$section_name" =~ [[:space:]] ]]; then
-    echo "The section name \"$section_name\" contains spaces. Please use it without spaces." /bin/bash
-  fi
 fi
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -d ' ') 
+ssection_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
+
+# Check for spaces in section name
+if [[ "$section_name" != "$(echo "$section_name" | tr -d '[:space:]')" ]]; then
+  echo "Drive name \"$section_name\" contains spaces. Please verify if there are spaces in \"$config_file\" file under [\"$section_name\"]."
+/bin/bash
+fi
 
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
