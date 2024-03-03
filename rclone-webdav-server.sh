@@ -56,25 +56,24 @@ if [ ! -f $config_file ]; then
 fi
 
 
-# Get section name from rclone.conf
+# Process the section name
 section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9 _-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
+
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
-  echo "The first line in the rclone.conf file does not contain a valid section name."
-  echo "Please verify the section name on the first line of the rclone.conf file."
+echo "The first line in the rclone.conf file does not contain a valid section name."
+/bin/bash
 fi
 
-# Get last word from the section name
-last_word=$(echo "$section_name" | grep -oE '[[:alnum:]_+-]+$')
+# Remove brackets and replace spaces with underscores
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr ' ' '_')
 
-# Check if the last word is the same as the original section name
-if [[ "$last_word" != "$section_name" ]]; then
-  # Replace section name in config file
-  sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$last_word]/" "$config_file"
-  echo "Section name \"$section_name\" contains non-alphanumeric characters. Replaced with \"$last_word\" in \"$config_file\"."
-fi
+# Update section name in the file
+sed -i "1s/.*/[$section_name]/" "$config_file"
 
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
+echo "Section name updated in $config_file" 
+echo "New Section name : $section_name" 
 
+#-----------------------------------------------------------------
 
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
