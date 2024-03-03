@@ -62,15 +62,11 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   echo "Please verify the section name on the first line of the rclone.conf file."
   exit 1
 fi
-
-# Extract section name from the matched line
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
-
-# Replace spaces with hyphens in section name
-new_section_name=$(echo "$section_name" | sed 's/ /-/g')
+# Extract and replace spaces with '-'
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -d '[:space:]' | tr ' ' '-')
 
 # Replace section name in the file
-sed -i "1s/$section_name/$new_section_name/" "$config_file"
+sed -i "1s/.*/[$section_name]/" "$config_file"
 
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
