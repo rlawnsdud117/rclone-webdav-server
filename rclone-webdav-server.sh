@@ -62,13 +62,15 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   echo "Please verify the section name on the first line of the rclone.conf file."
   exit 1
 fi
+# Extract section name from the matched line
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -s '[:space:]' '_' | tr -d '[:space:]')
 
-original_section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/')
+echo "Original section name: $section_name"
 
-# Check for spaces in section name
-if [[ "$original_section_name" != "$section_name" ]]; then
-  section_name=$(echo "$original_section_name" | tr ' ' '_')
-  sed -i "1s/$original_section_name/$section_name/" "$config_file"
+# Replace section name in config file if it contains spaces
+if [[ "$section_name" != "$(echo "$section_name" | tr -d '[:space:]')" ]]; then
+  sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$section_name]/" "$config_file"
+  echo "Section name \"$section_name\" contains spaces. Replaced with \"$section_name\" in \"$config_file\"."
 fi
 
 # Generate htpasswd file
