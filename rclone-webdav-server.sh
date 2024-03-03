@@ -63,9 +63,6 @@ if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
   echo "Please verify the section name on the first line of the rclone.conf file."
 fi
 
-# Extract section name from the matched line
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr -s '[:space:]' '_' | tr -d '[:space:]')
-
 # Get last word from the section name
 last_word=$(echo "$section_name" | grep -oE '[[:alnum:]_+-]+$')
 
@@ -75,6 +72,8 @@ if [[ "$last_word" != "$section_name" ]]; then
   sed -i "1s/^\[[[:space:]]*$section_name[[:space:]]*\]/[$last_word]/" "$config_file"
   echo "Section name \"$section_name\" contains non-alphanumeric characters. Replaced with \"$last_word\" in \"$config_file\"."
 fi
+
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
 
 # Generate htpasswd file
