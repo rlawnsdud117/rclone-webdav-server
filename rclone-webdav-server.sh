@@ -74,8 +74,6 @@ section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr ' ' '_')
 # Update section name in the file
 sed -i "1s/.*/[$section_name]/" "$config_file"
 
-echo "Section name updated in $config_file" 
-echo "New Section name : $section_name" 
 
 #-----------------------------------------------------------------
 
