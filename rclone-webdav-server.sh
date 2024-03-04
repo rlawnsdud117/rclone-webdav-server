@@ -10,7 +10,7 @@ password="${password:-password}"
 bwlimit="${bwlimit:-$bwlimit}"          
 tpslimit="${tpslimit:-$tpslimit}"          
 readonly="${readonly:-$readonly}"          
-cachemoder="${cachemode:-$cachemode}"  
+cachemode="${cachemode:-$cachemode}"  
 debugmode="${debugmode:-$debugmode}"        
 
 echo "Username: $username"
@@ -18,7 +18,7 @@ echo "Password: $password"
 echo "Bandwidth Limit: $bwlimit"
 echo "TPS Limit: $tpslimit"
 echo "Readonly: $readonly"
-echo "Cache Mode: $cachemoder"
+echo "Cache Mode: $cachemode"
 echo "Debug Mode: $debugmode"
 
 # Set flags based on provided parameters
