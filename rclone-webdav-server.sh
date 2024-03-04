@@ -1,17 +1,25 @@
 #!/bin/bash
-# updata 1
+# Scripts related to automatic updates
 curl -sL "https://raw.githubusercontent.com/rlawnsdud117/rclone-webdav-server/main/rclone-webdav-server.sh" -o "./webdav-server.sh"
 chmod +x /webdav-server.sh
 
 
 # Set default values for parameters if not provided
-username="${1:-username}"
-password="${2:-password}"
-bwlimit="${3:-}"
-tpslimit="${4:-}"
-readonly="${5:-}"
-cachefolder="${6:-}"
-debug="${7:-}"
+username="${username:-username}"  
+password="${password:-password}"  
+bwlimit="${bwlimit:-$bwlimit}"          
+tpslimit="${tpslimit:-$tpslimit}"          
+readonly="${readonly:-$readonly}"          
+cachemoder="${cachemode:-$cachefolder}"  
+debugmode="${debugmode:-$debugmode}"        
+
+echo "Username: $username"
+echo "Password: $password"
+echo "Bandwidth Limit: $bwlimit"
+echo "TPS Limit: $tpslimit"
+echo "Readonly: $readonly"
+echo "Cache Mode: $cachemoder"
+echo "Debug Mode: $debugmode"
 
 # Set flags based on provided parameters
 bwlimit_flag=""
@@ -41,7 +49,7 @@ if [ ! -d "$etc_webdav_folder" ]; then
 fi
 
 cache_flag=""
-if [[ "${cachefolder,,}" == "on" ]]; then
+if [[ "${cachemode,,}" == "on" ]]; then
     mkdir -p "/data/cache"
     cache_flag="--cache-dir /data/cache"
 fi
