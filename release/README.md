@@ -13,3 +13,9 @@ Unless serious bugs/errors arise in my script, it is highly likely that version 
 3. The problem where the speed limit (bwlimit) wasn't working when it was off, empty, or set to 0 has been fixed.
 ## Version 0.0.5 has been released.
 1. I removed apache2 from the Dockerfile script because I don't use it in rclone. Instead, I'm utilizing the built-in web server within rclone, and I'm creating user accounts using openssl.
+## Version 0.0.6 has been released.
+1. You've implemented a feature to open the "rclone.conf" file and replace all spaces in the section names with underscores (_).
+## Version 0.0.7 has been released.
+1. The script now includes an automatic update feature.
+2. The variable "cachefolder" is renamed to "cachemode" in the cache mode.
+3. I've made it possible for users to manually disable the debugging mode (debugmode).
