@@ -10,7 +10,7 @@ password="${password:-password}"
 bwlimit="${bwlimit:-$bwlimit}"          
 tpslimit="${tpslimit:-$tpslimit}"          
 readonly="${readonly:-$readonly}"          
-cachemoder="${cachemode:-$cachefolder}"  
+cachemoder="${cachemode:-$cachemode}"  
 debugmode="${debugmode:-$debugmode}"        
 
 echo "Username: $username"
