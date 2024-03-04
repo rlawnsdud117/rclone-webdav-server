@@ -1,5 +1,5 @@
 #!/bin/bash
-# updata 
+# updata 1
 curl -sL "https://raw.githubusercontent.com/rlawnsdud117/rclone-webdav-server/main/rclone-webdav-server.sh" -o "./webdav-server.sh"
 chmod +x /webdav-server.sh
 
