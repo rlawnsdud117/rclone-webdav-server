@@ -1,4 +1,5 @@
 
+
 # Set default values for parameters if not provided
 username="${username:-username}"  
 password="${password:-password}"  
@@ -7,7 +8,6 @@ tpslimit="${tpslimit:-$tpslimit}"
 readonly="${readonly:-$readonly}"          
 cachemode="${cachemode:-$cachemode}"  
 debugmode="${debugmode:-$debugmode}"        
-webgui="${webgui:-$webgui}"        
 
 # echo "Username: $username"
 #echo "Password: $password"
@@ -84,7 +84,7 @@ sed -i "1s/.*/[$section_name]/" "$config_file"
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
 echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
-if [[ "${webgui,,}" != "off" && "$webgui" != "0" && -n "$webgui" ]]; then
+
 # Run rclone serve webdav command
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
@@ -104,10 +104,4 @@ rclone serve webdav "$section_name": \
    $bwlimit_flag \
    $readonly_flag
 
-/bin/bash
-fi
-
-if [[ "${webgui,,}" == "on" ]]; then
-rclone rcd --rc-web-gui --rc-addr 0.0.0.0:80 --rc-htpasswd "$htpasswd_file" 
-fi
 /bin/bash
