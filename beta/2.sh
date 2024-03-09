@@ -91,7 +91,7 @@ htpasswd_file="/etc/webdav/htpasswd"
 echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 
 
-if [[ "${webgui,,}" != "off" && "$webgui" != "0" && -n "$webgui" ]]; then
+if [[ "${webgui,,}" != "on" && "$webgui" != "0" && -n "$webgui" ]]; then
   rclone rcd --rc-web-gui --rc-addr 0.0.0.0:808 --rc-htpasswd $htpasswd_file
 
 fi
