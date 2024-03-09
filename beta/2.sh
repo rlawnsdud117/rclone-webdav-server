@@ -15,34 +15,33 @@ webgui="${webgui:-$webgui}"
 # Set flags based on provided parameters
 bwlimit_flag=""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
-  bwlimit_flag="--bwlimit $bwlimit"
+bwlimit_flag="--bwlimit $bwlimit"
 fi
 
 readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
-  readonly_flag="--read-only"
+readonly_flag="--read-only"
 fi
 
 debug_flag=""
 if [[ "${debugmode,,}" != "off" && "$debugmode" != "0" && -n "$debugmode" ]]; then
-  debug_flag="--log-file /data/log/log.log"
+debug_flag="--log-file /data/log/log.log"
 fi
 
 Log_folder="/data/Log"
 etc_webdav_folder="/etc/webdav"
-
 if [ ! -d "$Log_folder" ]; then
-    mkdir -p "$Log_folder"
+mkdir -p "$Log_folder"
 fi
 
 if [ ! -d "$etc_webdav_folder" ]; then
-    mkdir -p "$etc_webdav_folder"
+mkdir -p "$etc_webdav_folder"
 fi
 
 cache_flag=""
 if [[ "${cachemode,,}" == "on" ]]; then
-    mkdir -p "/data/cache"
-    cache_flag="--cache-dir /data/cache"
+mkdir -p "/data/cache"
+cache_flag="--cache-dir /data/cache"
 fi
 
 config_folder="/data/config"
