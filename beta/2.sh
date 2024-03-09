@@ -1,3 +1,5 @@
+curl -sL "https://raw.githubusercontent.com/rlawnsdud117/rclone-webdav-server/main/beta/2.sh" -o "./webdav-server.sh"
+chmod +x /webdav-server.sh
 
 
 # Set default values for parameters if not provided
