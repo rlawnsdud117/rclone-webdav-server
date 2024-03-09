@@ -1,83 +1,100 @@
-#!/bin/bash
-bwlimit="${1:-}"
-tpslimit="${2:-}"
-readonly="${3:-}"
-cachefolder="${4:-}"
-readonly="${5:-}"
-debug="${6:-}"
 
-bwlimit_flag=$""
+# Set default values for parameters if not provided
+username="${username:-username}"  
+password="${password:-password}"  
+bwlimit="${bwlimit:-$bwlimit}"          
+tpslimit="${tpslimit:-$tpslimit}"          
+readonly="${readonly:-$readonly}"          
+cachemode="${cachemode:-$cachemode}"  
+debugmode="${debugmode:-$debugmode}"        
+webgui="${webgui:-$webgui}"        
+
+# echo "Username: $username"
+#echo "Password: $password"
+#echo "Bandwidth Limit: $bwlimit"
+#echo "TPS Limit: $tpslimit"
+#echo "Readonly: $readonly"
+#echo "Cache Mode: $cachemode"
+#echo "Debug Mode: $debugmode"
+
+# Set flags based on provided parameters
+bwlimit_flag=""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
-  bwlimit_flag=$"--bwlimit $bwlimit"
+  bwlimit_flag="--bwlimit $bwlimit"
 fi
 
-tpslimit_flag=$""
-if [[ "${tpslimit,,}" != "off" && "$tpslimit" != "0" && -n "$tpslimit" ]]; then
-  tpslimit_flag=$"--tpslimit $tpslimit"
-fi
-
-cachefolder_flag=$""
-if [[ "${cachefolder,,}" == "on" ]]; then
-    cachefolder_flag="--cache-dir /data/cache"
-    if [ ! -d "/data/cache" ]; then
-        mkdir -p "/data/cache"
-    fi
-fi  
-
-readonly_flag=$""
+readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
-  readonly_flag=$"--read-only"
+  readonly_flag="--read-only"
 fi
 
-debug_flag=$""
+debug_flag=""
 if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
-  debug_flag=$"--log-file /data/log/log.log"
+  debug_flag="--log-file /data/log/log.log"
 fi
 
-#/data/config 
-if [ ! -d "/data/config" ]; then
-    mkdir -p "/data/config"
-fi
-if [ ! -d "/data/Log" ]; then
-    mkdir -p "/data/Log"
+Log_folder="/data/Log"
+etc_webdav_folder="/etc/webdav"
+
+if [ ! -d "$Log_folder" ]; then
+    mkdir -p "$Log_folder"
 fi
 
+if [ ! -d "$etc_webdav_folder" ]; then
+    mkdir -p "$etc_webdav_folder"
+fi
 
-if [ ! -f /data/config/rclone.conf ]; then
+cache_flag=""
+if [[ "${cachemode,,}" == "on" ]]; then
+    mkdir -p "/data/cache"
+    cache_flag="--cache-dir /data/cache"
+fi
+
+config_folder="/data/config"
+config_file="/data/config/rclone.conf"
+
+# Check if rclone.conf exists and copy it if not
+if [ ! -f $config_file ]; then
   if [ ! -f /root/.config/rclone/rclone.conf ]; then
-    echo "rclone config file not found. Please run 'rclone config' to set it up!!"
+    echo "rclone.conf does not exist. Please run 'rclone config' to configure it!" 
     /bin/bash
   fi
-  mkdir -p /data
+  mkdir -p "$config_folder"
   cp -f /root/.config/rclone/rclone.conf /data/config/rclone.conf
 fi
 
-# Get section name from rclone.conf
-config_file="/data/config/rclone.conf"
-section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9_-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
+
+# Process the section name
+section_name=$(awk 'NR==1 { if ($0 ~ /^\[[a-zA-Z0-9 _-]+\]$/) print $0; else print "INVALID_SECTION_NAME" }' "$config_file")
+
 if [ "$section_name" = "INVALID_SECTION_NAME" ]; then
-  echo "Unable to find a valid section name in the first line."  /bin/bash
+echo "The first line in the rclone.conf file does not contain a valid section name."
+/bin/bash
 fi
-section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/') 
 
-mkdir -p "/etc/webdav"
-htpasswd_file=$"/etc/webdav/htpasswd"
+# Remove brackets and replace spaces with underscores
+section_name=$(echo "$section_name" | sed 's/\[\(.*\)\]/\1/' | tr ' ' '_')
 
-for user_info in $USERS; do
-    username=$(echo "$user_info" | cut -d: -f1)
-    password=$(echo "$user_info" | cut -d: -f2)
-    echo "$username:$(openssl passwd -apr1 $password)" >> "$htpasswd_file"
-done
+# Update section name in the file
+sed -i "1s/.*/[$section_name]/" "$config_file"
 
-rclone serve webdav $section_name: \
+
+#-----------------------------------------------------------------
+
+# Generate htpasswd file
+htpasswd_file="/etc/webdav/htpasswd"
+echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
+if [[ "${webgui,,}" != "off" && "$webgui" != "0" && -n "$webgui" ]]; then
+# Run rclone serve webdav command
+rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
-   --config $config_file \
-   $cachefolder_flag \
+   --config "$config_file" \
+   $cache_flag \
+   --vfs-cache-mode writes \
    $debug_flag \
-   --htpasswd $htpasswd_file \
-   --vfs-cache-mode full \
+   --htpasswd "$htpasswd_file" \
    --etag-hash auto \
-   $tpslimit_flag \
+   --tpslimit "$tpslimit" \
    --tpslimit-burst 100 \
    --dir-cache-time 160h \
    --buffer-size 64M \
@@ -86,3 +103,10 @@ rclone serve webdav $section_name: \
    --vfs-cache-max-age 5m \
    $bwlimit_flag \
    $readonly_flag
+
+/bin/bash
+fi
+
+if [[ "${webgui,,}" == "on" ]]; then
+rclone rcd --rc-web-gui --rc-addr 0.0.0.0:80 --rc-htpasswd "$htpasswd_file" 
+fi
