@@ -92,7 +92,7 @@ echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 
 
 if [[ "${webgui,,}" != "on" && "$webgui" != "0" && -n "$webgui" ]]; then
-  rclone rcd --rc-web-gui --rc-addr :8000 --rc-htpasswd $htpasswd_file
+  rclone rcd --rc-web-gui --rc-addr 0.0.0.0:8000 --rc-htpasswd $htpasswd_file
 
 fi
 
