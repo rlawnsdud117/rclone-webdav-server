@@ -8,14 +8,7 @@ tpslimit="${tpslimit:-$tpslimit}"
 readonly="${readonly:-$readonly}"          
 cachemode="${cachemode:-$cachemode}"  
 debugmode="${debugmode:-$debugmode}"        
-
-# echo "Username: $username"
-#echo "Password: $password"
-#echo "Bandwidth Limit: $bwlimit"
-#echo "TPS Limit: $tpslimit"
-#echo "Readonly: $readonly"
-#echo "Cache Mode: $cachemode"
-#echo "Debug Mode: $debugmode"
+webgui="${webgui:-$webgui}"        
 
 # Set flags based on provided parameters
 bwlimit_flag=""
@@ -85,6 +78,7 @@ sed -i "1s/.*/[$section_name]/" "$config_file"
 htpasswd_file="/etc/webdav/htpasswd"
 echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 
+if [[ "${webgui,,}" == "off" ]]; then
 # Run rclone serve webdav command
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
@@ -104,4 +98,12 @@ rclone serve webdav "$section_name": \
    $bwlimit_flag \
    $readonly_flag
 
+/bin/bash
+fi
+
+
+if [[ "${webgui,,}" == "on" ]]; then
+rclone rcd --rc-web-gui --rc-addr 0.0.0.0:80 --rc-htpasswd $htpasswd_file 
+/bin/bash
+fi
 /bin/bash
