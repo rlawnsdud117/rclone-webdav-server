@@ -89,7 +89,6 @@ sed -i "1s/.*/[$section_name]/" "$config_file"
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
 echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
-if [[ "${webgui,,}" != "on" && "$webgui" != "0" && -n "$webgui" ]]; then
 
 # Run rclone serve webdav command
 rclone serve webdav "$section_name": \
@@ -111,6 +110,3 @@ rclone serve webdav "$section_name": \
    $readonly_flag
 
 /bin/bash
-
-fi
-
