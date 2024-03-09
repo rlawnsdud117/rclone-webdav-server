@@ -110,3 +110,4 @@ fi
 if [[ "${webgui,,}" == "on" ]]; then
 rclone rcd --rc-web-gui --rc-addr 0.0.0.0:80 --rc-htpasswd "$htpasswd_file" 
 fi
+/bin/bash
