@@ -23,7 +23,6 @@ if [[ "${readonly,,}" == "on" ]]; then
   readonly_flag="--read-only"
 fi
 
-
 debug_flag=""
 if [[ "${debugmode,,}" != "off" && "$debugmode" != "0" && -n "$debugmode" ]]; then
   debug_flag="--log-file /data/log/log.log"
