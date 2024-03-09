@@ -90,23 +90,9 @@ sed -i "1s/.*/[$section_name]/" "$config_file"
 htpasswd_file="/etc/webdav/htpasswd"
 echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
 
-# Run rclone serve webdav command
-rclone serve webdav "$section_name": \
-   --addr 0.0.0.0:80 \
-   --config "$config_file" \
-   $cache_flag \
-   --vfs-cache-mode writes \
-   $debug_flag \
-   --htpasswd "$htpasswd_file" \
-   --etag-hash auto \
-   --tpslimit "$tpslimit" \
-   --tpslimit-burst 100 \
-   --dir-cache-time 160h \
-   --buffer-size 64M \
-   --vfs-read-chunk-size 2M \
-   --vfs-read-chunk-size-limit 2G \
-   --vfs-cache-max-age 5m \
-   $bwlimit_flag \
-   $readonly_flag
 
-/bin/bash
+if [[ "${webgui,,}" != "off" && "$webgui" != "0" && -n "$webgui" ]]; then
+  rclone rcd --rc-web-gui --rc-addr 0.0.0.0:808 --rc-htpasswd $htpasswd_file
+
+fi
+
