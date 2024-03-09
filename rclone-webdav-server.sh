@@ -33,7 +33,7 @@ if [[ "${readonly,,}" == "on" ]]; then
 fi
 
 debug_flag=""
-if [[ "${debug,,}" != "off" && "$debug" != "0" && -n "$debug" ]]; then
+if [[ "${debugmode,,}" != "off" && "$debugmode" != "0" && -n "$debugmode" ]]; then
   debug_flag="--log-file /data/log/log.log"
 fi
 
