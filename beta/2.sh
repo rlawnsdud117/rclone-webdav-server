@@ -1,3 +1,5 @@
+#!/bin/bash
+# Scripts related to automatic updates
 curl -sL "https://raw.githubusercontent.com/rlawnsdud117/rclone-webdav-server/main/beta/2.sh" -o "./webdav-server.sh"
 chmod +x /webdav-server.sh
 
@@ -12,36 +14,45 @@ cachemode="${cachemode:-$cachemode}"
 debugmode="${debugmode:-$debugmode}"        
 webgui="${webgui:-$webgui}"        
 
+# echo "Username: $username"
+#echo "Password: $password"
+#echo "Bandwidth Limit: $bwlimit"
+#echo "TPS Limit: $tpslimit"
+#echo "Readonly: $readonly"
+#echo "Cache Mode: $cachemode"
+#echo "Debug Mode: $debugmode"
+
 # Set flags based on provided parameters
 bwlimit_flag=""
 if [[ "${bwlimit,,}" != "off" && "$bwlimit" != "0" && -n "$bwlimit" ]]; then
-bwlimit_flag="--bwlimit $bwlimit"
+  bwlimit_flag="--bwlimit $bwlimit"
 fi
 
 readonly_flag=""
 if [[ "${readonly,,}" == "on" ]]; then
-readonly_flag="--read-only"
+  readonly_flag="--read-only"
 fi
 
 debug_flag=""
 if [[ "${debugmode,,}" != "off" && "$debugmode" != "0" && -n "$debugmode" ]]; then
-debug_flag="--log-file /data/log/log.log"
+  debug_flag="--log-file /data/log/log.log"
 fi
 
 Log_folder="/data/Log"
 etc_webdav_folder="/etc/webdav"
+
 if [ ! -d "$Log_folder" ]; then
-mkdir -p "$Log_folder"
+    mkdir -p "$Log_folder"
 fi
 
 if [ ! -d "$etc_webdav_folder" ]; then
-mkdir -p "$etc_webdav_folder"
+    mkdir -p "$etc_webdav_folder"
 fi
 
 cache_flag=""
 if [[ "${cachemode,,}" == "on" ]]; then
-mkdir -p "/data/cache"
-cache_flag="--cache-dir /data/cache"
+    mkdir -p "/data/cache"
+    cache_flag="--cache-dir /data/cache"
 fi
 
 config_folder="/data/config"
@@ -78,8 +89,8 @@ sed -i "1s/.*/[$section_name]/" "$config_file"
 # Generate htpasswd file
 htpasswd_file="/etc/webdav/htpasswd"
 echo "$username:$(openssl passwd -apr1 $password)" > "$htpasswd_file"
+if [[ "${webgui,,}" != "on" && "$webgui" != "0" && -n "$webgui" ]]; then
 
-if [[ "${webgui,,}" == "off" ]]; then
 # Run rclone serve webdav command
 rclone serve webdav "$section_name": \
    --addr 0.0.0.0:80 \
@@ -100,11 +111,6 @@ rclone serve webdav "$section_name": \
    $readonly_flag
 
 /bin/bash
+
 fi
 
-
-if [[ "${webgui,,}" == "on" ]]; then
-rclone rcd --rc-web-gui --rc-addr 0.0.0.0:80 --rc-htpasswd $htpasswd_file 
-/bin/bash
-fi
-/bin/bash
